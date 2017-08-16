@@ -1,0 +1,43 @@
+{
+  "id": null,
+  "x": null,
+  "y": null,
+  "name": null,
+  "notes": {
+    "summary": {
+      "id": null,
+      "addedBy": null,
+      "description": null,
+      "link": null,
+      "createdAt": null,
+      "updatedAt": null
+    },
+    "strongEvidence": [
+      {
+        "detail": null,
+        "references": [
+          {
+            "id": null,
+            "link": null
+          }
+        ]
+      }
+    ],
+    "weakEvidence": [
+      {
+        "detail": null,
+        "references": [
+          {
+            "id": null,
+            "link": null
+          }
+        ]
+      }
+    ],
+    "uncertain": [
+      {
+        "detail": null
+      }
+    ]
+  }
+}

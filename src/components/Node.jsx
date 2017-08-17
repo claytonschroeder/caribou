@@ -15,11 +15,6 @@ class Node extends Component {
 
   render() {
     let nodeStyle = {
-      backgroundColor: 'red',
-      position: 'absolute',
-      height: '25px',
-      width: '25px',
-      zIndex: '999',
       left: this.props.data.x + 'px',
       top: this.props.data.y + 'px'
     }

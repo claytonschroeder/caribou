@@ -1,35 +1,56 @@
 import React, {Component} from 'react';
+import { findDOMNode } from 'react-dom';
 import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
-class Info extends Component {
+class Editor extends Component {
   constructor(props) {
     super(props)
-    this.deleteButton = this.deleteButton.bind(this);
-    this.editButton = this.editButton.bind(this);
+
+    this.saveChanges = this.saveChanges.bind(this);
+
   }
 
-  deleteButton(id){
-    this.props.deleteNode(id)
+  saveChanges(node){
+    let newNode = node
+    var newName = findDOMNode(this.refs.name).value
+    var newSummary = findDOMNode(this.refs.summary).value
+    newNode.name = newName;
+    newNode.notes.summary.description = newSummary;
+    this.props.sendEdits(newNode)
   }
 
-  editButton(id){
-    this.props.editNode(id)
-  }
 
   render() {
 
-    let nodeInfo;
+    let editorForm;
 
-    const node = this.props.node
+    const node = this.props.node;
+
 
     if(node){
-      nodeInfo = (
-        <Panel id="info-panel" header={ node.name ? node.name : 'No Name Given' } bsStyle="primary">
+      const title = (
+        <form>
+          <FormControl
+            type="text"
+            placeholder="Enter a name"
+            ref="name"
+            defaultValue={ node.name ? node.name : '' } />
+        </form>
+      )
+      editorForm = (
+        <Panel id="info-panel" header={ title } bsStyle="warning">
           <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
 
             <Tab eventKey={1} title="Summary">
-              <p>{ node.notes.summary.description ? node.notes.summary.description : 'no description given for this node'}</p>
+              <form>
+                <FormControl
+                  componentClass="textarea"
+                  placeholder="Enter a summary"
+                  ref="summary"
+                  defaultValue={ node.notes.summary.description ? node.notes.summary.description : '' } />
+              </form>
             </Tab>
+
 
             <Tab eventKey={2} title="Strong Evidence">
               {
@@ -37,8 +58,16 @@ class Info extends Component {
                   if(evidence.detail){
                     return (
                       <div key={ i }>
-                        <p> { evidence.detail } </p>
-                        <ul>
+                        <form>
+                          <FormGroup controlId="strongEvidenceTextarea">
+                            <FormControl
+                              componentClass="textarea"
+                              placeholder="Enter your evidence"
+                              ref="strong"
+                              defaultValue={ evidence.detail ? evidence.detail : '' } />
+                          </FormGroup>
+                        </form>
+                        <ul key={ i }>
                           {
                             evidence.references.map((reference, index) => {
                               return (
@@ -55,6 +84,7 @@ class Info extends Component {
                 })
               }
             </Tab>
+
 
             <Tab eventKey={3} title="Weak/Conflicting Evidence">
               {
@@ -81,6 +111,7 @@ class Info extends Component {
               }
             </Tab>
 
+
             <Tab eventKey={4} title="Uncertain">
               {
                 node.notes.uncertain.map((evidence, i) => {
@@ -96,20 +127,18 @@ class Info extends Component {
                 })
               }
             </Tab>
-
           </Tabs>
-          <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteButton(node.id) } >Delete</Button>
-          <Button id="edit-button" bsStyle="info" onClick={ () => this.editButton(node.id) } >Edit</Button>
+          <Button id="edit-button" bsStyle="success" onClick={ () => this.saveChanges(node) } >Save Changes</Button>
         </Panel>
       )
     } else {
-      nodeInfo = null
+      editorForm = null
     }
     return (
-      <div className='info-container'>
-        { nodeInfo }
+      <div className='editor-container'>
+        { editorForm }
       </div>
     );
   }
 }
-export default Info;
+export default Editor;

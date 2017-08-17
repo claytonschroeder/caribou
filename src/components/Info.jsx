@@ -4,12 +4,7 @@ import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl } from '
 class Info extends Component {
   constructor(props) {
     super(props)
-    this.deleteButton = this.deleteButton.bind(this);
     this.editButton = this.editButton.bind(this);
-  }
-
-  deleteButton(id){
-    this.props.deleteNode(id)
   }
 
   editButton(id){
@@ -98,7 +93,6 @@ class Info extends Component {
             </Tab>
 
           </Tabs>
-          <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteButton(node.id) } >Delete</Button>
           <Button id="edit-button" bsStyle="info" onClick={ () => this.editButton(node.id) } >Edit</Button>
         </Panel>
       )

@@ -91,6 +91,10 @@ export default function(update) {
 
       update();
     },
+    updateNodeArray: (nodes) => {
+      state.nodes = nodes;
+      update();
+    },
     getState: () => {
       return state;
     }

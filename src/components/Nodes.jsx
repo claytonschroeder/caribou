@@ -36,7 +36,7 @@ class Nodes extends Component {
     return (
         <Row className="show-grid">
           <Col xs={12} md={12}>
-            <img src='/build/images/PallidSturgeon.png' onClick={this.getLocation } style={imageStyle}>
+            <img src='/build/images/FraserValley.png' onClick={this.getLocation } style={imageStyle}>
             </img>
             { nodes }
           </Col>

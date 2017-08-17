@@ -10,6 +10,7 @@ class Editor extends Component {
     }
     this.saveChanges = this.saveChanges.bind(this);
     this.updateName = this.updateName.bind(this);
+    this.deleteNode = this.deleteNode.bind(this);
 
   }
 
@@ -25,9 +26,14 @@ class Editor extends Component {
         this.saveWeakEvidence(node)
       break;
       case 4:
-        console.log('cant do nuthin')
+        this.saveUncertain(node)
       break;
     }
+  }
+
+  deleteNode(node){
+    this.props.deleteNode(node.id)
+    this.props.updateEditState()
   }
 
   updateName(node){
@@ -86,6 +92,21 @@ class Editor extends Component {
       evidence[evIndex].references = referenceArray;
     }
     this.props.updateWeakEvidence(copyNode.id, evidence);
+  }
+
+  saveUncertain(node) {
+    const evidence = [];
+
+    const evidenceLength = node.notes.uncertain.length
+
+    let copyNode = node;
+
+    for(let unIndex = 0; unIndex < evidenceLength; unIndex++){
+      let uncertainRef = `uncertain-${unIndex}`
+      copyNode.notes.uncertain[unIndex].detail = findDOMNode(this.refs[uncertainRef]).value
+      evidence.push(copyNode.notes.uncertain[unIndex])
+    }
+    this.props.updateUncertainEvidence(copyNode.id, evidence);
   }
 
 
@@ -206,20 +227,23 @@ class Editor extends Component {
             <Tab eventKey={4} title="Uncertain">
               {
                 node.notes.uncertain.map((evidence, i) => {
-                  if(evidence.detail){
-                    return (
-                      <div key={ i }>
-                        <p> { evidence.detail } </p>
-                      </div>
-                    )
-                  } else {
-                    return <p>no uncertain evidence given for this node</p>
-                  }
+                  return (
+                    <form key={ i }>
+                      <FormGroup controlId="strongEvidenceTextarea">
+                        <FormControl
+                          componentClass="textarea"
+                          placeholder="Enter your evidence"
+                          ref={ `uncertain-${i}` }
+                          onChange= { () => this.saveChanges(node) }
+                          defaultValue={ evidence.detail ? evidence.detail : '' } />
+                      </FormGroup>
+                    </form>
+                  )
                 })
               }
             </Tab>
           </Tabs>
-          <Button id="edit-button" bsStyle="success" onClick={ () => this.saveChanges(node) } >Save Changes</Button>
+          <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteNode(node) } >Delete</Button>
         </Panel>
       )
     } else {

@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Nodes from './components/Nodes.jsx'
 import Info from './components/Info.jsx'
 import Editor from './components/Editor.jsx'
+import Toolbox from './components/Toolbox.jsx'
 
 import { Grid, Col, Row } from 'react-bootstrap';
 
@@ -30,15 +31,24 @@ class App extends Component {
     this.actions = actions(this.store);
 
     this.newNode = this.newNode.bind(this);
-    this.deleteNode = this.deleteNode.bind(this);
     this.selectNode = this.selectNode.bind(this);
     this.editNode = this.editNode.bind(this);
     this.sendEdits = this.sendEdits.bind(this);
+    this.updateEditState = this.updateEditState.bind(this);
   }
 
   updateNodes() {
     this.setState({
       nodes: this.store.getState().nodes
+    })
+  }
+
+  updateEditState(){
+    this.setState({
+      selectedNode: null,
+      editNode: null,
+      shouldDisplayInfo: false,
+      shouldDisplayEditor: false
     })
   }
 
@@ -57,19 +67,6 @@ class App extends Component {
       selectedNode: blankTemplate,
       editNode: null,
       shouldDisplayInfo: true
-    })
-  }
-
-  /* Delete a node from the image container */
-  deleteNode(id){
-    let nodes = this.state.nodes
-    let updatedNodeArray = nodes.filter((node) => {
-      return node.id !== id
-    })
-    this.setState({
-      nodes: updatedNodeArray,
-      selectedNode: null,
-      editNode: null
     })
   }
 
@@ -116,7 +113,6 @@ class App extends Component {
     nodeInfo = this.state.selectedNode ?  (
       <Info
         node = { this.state.selectedNode }
-        deleteNode = { this.deleteNode }
         editNode = { this.editNode } />
     ) : null
 
@@ -124,6 +120,7 @@ class App extends Component {
       <Editor
         { ...this.actions }
         node = { this.state.editNode }
+        updateEditState = { this.updateEditState }
         sendEdits = { this.sendEdits } />
     ) : null
 
@@ -142,6 +139,9 @@ class App extends Component {
           </Col>
           <Col xs={12} md={8} style={{display: this.state.shouldDisplayEditor ? 'block' : 'none'}}>
             { nodeEdit }
+          </Col>
+          <Col xs={12} md={4}>
+            <Toolbox />
           </Col>
         </Row>
       </Grid>

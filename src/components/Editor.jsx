@@ -9,6 +9,7 @@ class Editor extends Component {
       activeTab: 1,
     }
     this.saveChanges = this.saveChanges.bind(this);
+    this.updateName = this.updateName.bind(this);
 
   }
 
@@ -27,6 +28,10 @@ class Editor extends Component {
         console.log('cant do nuthin')
       break;
     }
+  }
+
+  updateName(node){
+    this.props.updateName(node.id, { name: findDOMNode(this.refs.name).value });
   }
 
   saveSummaryChanges(node) {
@@ -98,7 +103,8 @@ class Editor extends Component {
             type="text"
             placeholder="Enter a name"
             ref="name"
-            defaultValue={ node.name ? node.name : '' } />
+            defaultValue={ node.name ? node.name : '' }
+            onChange= { () => this.updateName(node) } />
         </form>
       )
       editorForm = (
@@ -111,6 +117,7 @@ class Editor extends Component {
                   componentClass="textarea"
                   placeholder="Enter a summary"
                   ref="summary"
+                  onChange= { () => this.saveChanges(node) }
                   defaultValue={ node.notes.summary.description ? node.notes.summary.description : '' } />
               </form>
             </Tab>
@@ -119,40 +126,38 @@ class Editor extends Component {
             <Tab eventKey={2} title="Strong Evidence">
               {
                 node.notes.strongEvidence.map((evidence, i) => {
-                  if(evidence.detail){
-                    return (
-                      <div key={ i }>
-                        <form>
-                          <FormGroup controlId="strongEvidenceTextarea">
-                            <FormControl
-                              componentClass="textarea"
-                              placeholder="Enter your evidence"
-                              ref={ `strong-${i}` }
-                              defaultValue={ evidence.detail ? evidence.detail : '' } />
-                          </FormGroup>
-                        </form>
-                        <ul key={ i }>
-                          {
-                            evidence.references.map((reference, index) => {
-                              return (
-                                <form key={ index }>
-                                  <FormGroup controlId="strongEvidenceReferenceText">
-                                    <FormControl
-                                      type="text"
-                                      placeholder="Enter your reference link"
-                                      ref={ `strong-link-${i}-${index}` }
-                                      defaultValue={ reference.link ? reference.link : '' } />
-                                  </FormGroup>
-                                </form>
-                              )
-                            })
-                          }
-                        </ul>
-                      </div>
-                    )
-                  } else {
-                    return <p>no strong evidence given for this node</p>
-                  }
+                  return (
+                    <div key={ i }>
+                      <form>
+                        <FormGroup controlId="strongEvidenceTextarea">
+                          <FormControl
+                            componentClass="textarea"
+                            placeholder="Enter your evidence"
+                            ref={ `strong-${i}` }
+                            onChange= { () => this.saveChanges(node) }
+                            defaultValue={ evidence.detail ? evidence.detail : '' } />
+                        </FormGroup>
+                      </form>
+                      <ul key={ i }>
+                        {
+                          evidence.references.map((reference, index) => {
+                            return (
+                              <form key={ index }>
+                                <FormGroup controlId="strongEvidenceReferenceText">
+                                  <FormControl
+                                    type="text"
+                                    placeholder="Enter your reference link"
+                                    ref={ `strong-link-${i}-${index}` }
+                                    onChange= { () => this.saveChanges(node) }
+                                    defaultValue={ reference.link ? reference.link : '' } />
+                                </FormGroup>
+                              </form>
+                            )
+                          })
+                        }
+                      </ul>
+                    </div>
+                  )
                 })
               }
             </Tab>
@@ -161,40 +166,38 @@ class Editor extends Component {
             <Tab eventKey={3} title="Weak/Conflicting Evidence">
               {
                 node.notes.weakEvidence.map((evidence, i) => {
-                  if(evidence.detail){
-                    return (
-                      <div key={ i }>
-                        <form>
-                          <FormGroup controlId="strongEvidenceTextarea">
-                            <FormControl
-                              componentClass="textarea"
-                              placeholder="Enter your evidence"
-                              ref={ `weak-${i}` }
-                              defaultValue={ evidence.detail ? evidence.detail : '' } />
-                          </FormGroup>
-                        </form>
-                        <ul key={ i }>
-                          {
-                            evidence.references.map((reference, index) => {
-                              return (
-                                <form key={ index }>
-                                  <FormGroup controlId="strongEvidenceReferenceText">
-                                    <FormControl
-                                      type="text"
-                                      placeholder="Enter your reference link"
-                                      ref={ `weak-link-${i}-${index}` }
-                                      defaultValue={ reference.link ? reference.link : '' } />
-                                  </FormGroup>
-                                </form>
-                              )
-                            })
-                          }
-                        </ul>
-                      </div>
-                    )
-                  } else {
-                    return <p>no strong evidence given for this node</p>
-                  }
+                  return (
+                    <div key={ i }>
+                      <form>
+                        <FormGroup controlId="strongEvidenceTextarea">
+                          <FormControl
+                            componentClass="textarea"
+                            placeholder="Enter your evidence"
+                            ref={ `weak-${i}` }
+                            onChange= { () => this.saveChanges(node) }
+                            defaultValue={ evidence.detail ? evidence.detail : '' } />
+                        </FormGroup>
+                      </form>
+                      <ul key={ i }>
+                        {
+                          evidence.references.map((reference, index) => {
+                            return (
+                              <form key={ index }>
+                                <FormGroup controlId="strongEvidenceReferenceText">
+                                  <FormControl
+                                    type="text"
+                                    placeholder="Enter your reference link"
+                                    ref={ `weak-link-${i}-${index}` }
+                                    onChange= { () => this.saveChanges(node) }
+                                    defaultValue={ reference.link ? reference.link : '' } />
+                                </FormGroup>
+                              </form>
+                            )
+                          })
+                        }
+                      </ul>
+                    </div>
+                  )
                 })
               }
             </Tab>

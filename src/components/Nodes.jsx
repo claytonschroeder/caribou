@@ -11,9 +11,10 @@ class Nodes extends Component {
   }
 
   getLocation(clickEvent){
+    let color = this.props.color ? this.props.color : 'red'
     let x = clickEvent.nativeEvent.offsetX;
     let y = clickEvent.nativeEvent.offsetY;
-    this.props.newNode(x, y)
+    this.props.newNode(x, y, color)
   }
 
   selectNode(id){
@@ -36,7 +37,7 @@ class Nodes extends Component {
     return (
         <Row className="show-grid">
           <Col xs={12} md={12}>
-            <img src='/build/images/FraserValley.png' onClick={this.getLocation } style={imageStyle}>
+            <img src='/build/images/FraserValley.png' onClick={ this.props.addNodeEnabled ? this.getLocation : null} style={imageStyle}>
             </img>
             { nodes }
           </Col>

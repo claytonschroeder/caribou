@@ -25,6 +25,8 @@ class App extends Component {
       editNode: null,
       shouldDisplayInfo: true,
       shouldDisplayEditor: false,
+      addNodeEnabled: false,
+      color: 'red',
       nodes: this.store.getState().nodes
     }
 
@@ -35,11 +37,19 @@ class App extends Component {
     this.editNode = this.editNode.bind(this);
     this.sendEdits = this.sendEdits.bind(this);
     this.updateEditState = this.updateEditState.bind(this);
+    this.toggleAddNode = this.toggleAddNode.bind(this);
+    this.selectColor = this.selectColor.bind(this);
   }
 
   updateNodes() {
     this.setState({
       nodes: this.store.getState().nodes
+    })
+  }
+
+  selectColor(color){
+    this.setState({
+      color: color
     })
   }
 
@@ -52,8 +62,14 @@ class App extends Component {
     })
   }
 
+  toggleAddNode(state){
+    this.setState({
+      addNodeEnabled: state
+    })
+  }
+
   /* Generate a new node on the image container */
-  newNode(x, y){
+  newNode(x, y, color){
     let random = Math.random()*1000000;
     let newId = Math.round(random);
     let blankTemplate = ObjectUtil.copy(newNodeTemplate);
@@ -61,6 +77,7 @@ class App extends Component {
     blankTemplate.id = newId;
     blankTemplate.x = x;
     blankTemplate.y = y - 10;
+    blankTemplate.color = color;
     nodeArray.push(blankTemplate);
     this.setState({
       nodes: nodeArray,
@@ -129,19 +146,29 @@ class App extends Component {
     return (
       <Grid>
         <Nodes
+          addNodeEnabled = { this.state.addNodeEnabled }
           nodes = { this.state.nodes }
           selectNode = { this.selectNode }
           newNode = { this.newNode }
+          color = { this.state.color }
         />
         <Row>
           <Col xs={12} md={8} style={{display: this.state.shouldDisplayInfo ? 'block' : 'none'}}>
             { nodeInfo }
           </Col>
+
           <Col xs={12} md={8} style={{display: this.state.shouldDisplayEditor ? 'block' : 'none'}}>
             { nodeEdit }
           </Col>
+
+          <Col xs={12} md={8} style={{display: !this.state.shouldDisplayEditor && !this.state.shouldDisplayInfo ? 'block' : 'none'}}>
+          </Col>
+
           <Col xs={12} md={4}>
-            <Toolbox />
+            <Toolbox
+              currentColor = { this.state.color }
+              selectColor = { this.selectColor }
+              toggleAddNode = { this.toggleAddNode } />
           </Col>
         </Row>
       </Grid>

@@ -5,6 +5,7 @@ const state = {
       x: 145,
       y: 125,
       name: 'Node 1',
+      color: 'red',
       notes: {
         summary: {
           id: 123411234,

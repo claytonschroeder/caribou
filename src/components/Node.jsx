@@ -16,7 +16,8 @@ class Node extends Component {
   render() {
     let nodeStyle = {
       left: this.props.data.x + 'px',
-      top: this.props.data.y + 'px'
+      top: this.props.data.y + 'px',
+      backgroundColor: this.props.data.color
     }
     return (
       <div id={this.props.data.id} className='single-node' style={nodeStyle} onClick={ this.selectedNode }>

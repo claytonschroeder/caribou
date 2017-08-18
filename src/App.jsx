@@ -23,6 +23,9 @@ class App extends Component {
       shouldDisplayEditor: false,
       addNodeEnabled: false,
       color: 'red',
+      redSelected: true,
+      blueSelected: true,
+      greenSelected: true,
       nodes: this.store.getState().nodes
     }
 
@@ -35,12 +38,33 @@ class App extends Component {
     this.updateEditState = this.updateEditState.bind(this);
     this.toggleAddNode = this.toggleAddNode.bind(this);
     this.selectColor = this.selectColor.bind(this);
+    this.filterNodes = this.filterNodes.bind(this);
   }
 
   updateNodes() {
     this.setState({
       nodes: this.store.getState().nodes
     })
+  }
+
+  filterNodes(color){
+    switch(color){
+      case 'red':
+        this.setState({
+          redSelected: !this.state.redSelected
+        })
+      break;
+      case 'blue':
+        this.setState({
+          blueSelected: !this.state.blueSelected
+        })
+      break;
+      case 'green':
+        this.setState({
+          greenSelected: !this.state.greenSelected
+        })
+      break;
+    }
   }
 
   selectColor(color){
@@ -66,7 +90,7 @@ class App extends Component {
 
   /* Generate a new node on the image container */
   newNode(x, y, color){
-    this.actions.addNewNode(x, y, color)
+    this.actions.addNewNode(x, y, color);
   }
 
   /* Select the Node you want to display the edit container for */
@@ -133,7 +157,9 @@ class App extends Component {
           selectNode = { this.selectNode }
           newNode = { this.newNode }
           color = { this.state.color }
-        />
+          redSelected = { this.state.redSelected }
+          blueSelected = { this.state.blueSelected }
+          greenSelected = { this.state.greenSelected } />
         <Row>
           <Col xs={12} md={8} style={{display: this.state.shouldDisplayInfo ? 'block' : 'none'}}>
             { nodeInfo }
@@ -148,9 +174,13 @@ class App extends Component {
 
           <Col xs={12} md={4}>
             <Toolbox
+              filterNodes = { this.filterNodes }
               currentColor = { this.state.color }
               selectColor = { this.selectColor }
-              toggleAddNode = { this.toggleAddNode } />
+              toggleAddNode = { this.toggleAddNode }
+              redSelected = { this.state.redSelected }
+              blueSelected = { this.state.blueSelected }
+              greenSelected = { this.state.greenSelected }/>
           </Col>
         </Row>
       </Grid>

@@ -8,15 +8,30 @@ class Toolbox extends Component {
     super(props)
     this.state = {
       activeTab: 1,
-      toggleActive: false
+      toggleActive: false,
     }
     this.onToggle = this.onToggle.bind(this);
     this.setColor = this.setColor.bind(this);
+    this.updateFilter = this.updateFilter.bind(this);
   }
 
   onToggle() {
     this.props.toggleAddNode(!this.state.toggleActive)
     this.setState({ toggleActive: !this.state.toggleActive });
+  }
+
+  updateFilter(color){
+    switch(color.currentTarget.value){
+      case 'red':
+        this.props.filterNodes('red')
+      break;
+      case 'blue':
+        this.props.filterNodes('blue')
+      break;
+      case 'green':
+        this.props.filterNodes('green')
+      break;
+    }
   }
 
   setColor(color){
@@ -26,6 +41,7 @@ class Toolbox extends Component {
   render() {
       const colorPicker = (
         <FormGroup>
+          <p>Select the color for your new node</p>
           <Radio name="colorPickerToolbox" inline value="red" defaultChecked={ this.props.currentColor === 'red' ? true : false } onClick={ this.setColor }>
             Red
           </Radio>
@@ -44,9 +60,11 @@ class Toolbox extends Component {
           <Tabs defaultActiveKey={1} onSelect={ key => this.setState({activeTab: key}) } id="uncontrolled-tab-example">
 
             <Tab eventKey={1} title="Add Nodes">
+              <p>Ability to add nodes is currently: </p>
               <Toggle
                 onClick={ this.onToggle }
                 size="sm"
+                onstyle="success"
                 offstyle="danger"
                 active={ this.state.toggleActive } />
                 {
@@ -56,7 +74,20 @@ class Toolbox extends Component {
 
 
             <Tab eventKey={2} title="Filter View">
-              <p>some way to filter which nodes you can and cant see</p>
+              <p>Select which color nodes you would like to display</p>
+              <FormGroup>
+                <Checkbox inline value='red' ref='red' defaultChecked={ this.props.redSelected ? true : false } onClick={ this.updateFilter }>
+                  Red
+                </Checkbox>
+                {'  '}
+                <Checkbox inline value='blue' ref='blue' defaultChecked={ this.props.blueSelected ? true : false } onClick={ this.updateFilter }>
+                  Blue
+                </Checkbox>
+                {'  '}
+                <Checkbox inline value='green' ref='green' defaultChecked={ this.props.greenSelected ? true : false } onClick={ this.updateFilter }>
+                  Green
+                </Checkbox>
+              </FormGroup>
             </Tab>
           </Tabs>
         </Panel>

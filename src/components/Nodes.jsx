@@ -30,7 +30,10 @@ class Nodes extends Component {
       return <Node
         key = {node.id}
         data = {node}
-        selectNode = {this.selectNode} />
+        selectNode = {this.selectNode}
+        redSelected = { this.props.redSelected }
+        blueSelected = { this.props.blueSelected }
+        greenSelected = { this.props.greenSelected } />
 
     })
 

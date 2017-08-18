@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
-import { Grid, Col, Row } from 'react-bootstrap';
+import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, HelpBlock, Button } from 'react-bootstrap';
 import Node from './Node.jsx'
 
 class Nodes extends Component {
   constructor(props) {
     super(props);
-
+    this.state={
+      imageURL: null
+    }
     this.getLocation = this.getLocation.bind(this);
     this.selectNode = this.selectNode.bind(this);
+    this.sendUrl = this.sendUrl.bind(this);
+    this.imageURL = this.imageURL.bind(this);
   }
 
   getLocation(clickEvent){
@@ -19,6 +23,16 @@ class Nodes extends Component {
 
   selectNode(id){
     this.props.selectNode(id)
+  }
+
+  imageURL(url){
+    this.setState({
+      imageURL: url.currentTarget.value
+    })
+  }
+
+  sendUrl(){
+    this.props.updateImageURL(this.state.imageURL)
   }
 
   render() {
@@ -37,13 +51,35 @@ class Nodes extends Component {
 
     })
 
+    const content = this.props.image ? (
+      <Col className='image-container' xs={12} md={12}>
+        <img className='image' src={ this.props.image } onClick={ this.props.addNodeEnabled ? this.getLocation : null} style={ imageStyle }>
+        </img>
+        { nodes }
+      </Col>
+    ) : (
+      <Col className='add-image' xs={12} md={12}>
+        <div className='add-image-form'>
+          <form>
+            <FormGroup controlId="addImage">
+              <ControlLabel>Copy and paste your image URL:</ControlLabel>
+              <FormControl
+                type="text"
+                value={ this.props.imageURL }
+                placeholder="Enter URL"
+                onChange={ this.imageURL }
+              />
+              <FormControl.Feedback />
+              <HelpBlock>The ideal image size is 1000 pixels x 500pixels. Larger images will require you to scroll, while smaller images will not take up the entire space.</HelpBlock>
+              <Button id="load-image-button" bsStyle="success" onClick={ this.sendUrl } >Load Image</Button>
+            </FormGroup>
+          </form>
+        </div>
+      </Col>
+    )
     return (
         <Row className="show-grid">
-          <Col xs={12} md={12}>
-            <img src='/build/images/FraserValley.png' onClick={ this.props.addNodeEnabled ? this.getLocation : null} style={imageStyle}>
-            </img>
-            { nodes }
-          </Col>
+          { content }
         </Row>
     );
   }

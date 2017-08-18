@@ -17,6 +17,7 @@ class App extends Component {
     this.store = store(this.updateNodes.bind(this));
 
     this.state = {
+      image: 'http://localhost:3000/build/images/FraserValley.png',
       selectedNode: null,
       editNode: null,
       shouldDisplayInfo: true,
@@ -39,11 +40,19 @@ class App extends Component {
     this.toggleAddNode = this.toggleAddNode.bind(this);
     this.selectColor = this.selectColor.bind(this);
     this.filterNodes = this.filterNodes.bind(this);
+    this.updateImageURL = this.updateImageURL.bind(this);
   }
 
   updateNodes() {
     this.setState({
       nodes: this.store.getState().nodes
+    })
+  }
+
+  updateImageURL(url){
+    console.log(url)
+    this.setState({
+      image: url
     })
   }
 
@@ -152,6 +161,8 @@ class App extends Component {
     return (
       <Grid>
         <Nodes
+          updateImageURL = { this.updateImageURL }
+          image = { this.state.image }
           addNodeEnabled = { this.state.addNodeEnabled }
           nodes = { this.state.nodes }
           selectNode = { this.selectNode }
@@ -172,16 +183,20 @@ class App extends Component {
           <Col xs={12} md={8} style={{display: !this.state.shouldDisplayEditor && !this.state.shouldDisplayInfo ? 'block' : 'none'}}>
           </Col>
 
-          <Col xs={12} md={4}>
-            <Toolbox
-              filterNodes = { this.filterNodes }
-              currentColor = { this.state.color }
-              selectColor = { this.selectColor }
-              toggleAddNode = { this.toggleAddNode }
-              redSelected = { this.state.redSelected }
-              blueSelected = { this.state.blueSelected }
-              greenSelected = { this.state.greenSelected }/>
-          </Col>
+          {
+            this.state.image ? (
+              <Col xs={12} md={4}>
+                <Toolbox
+                  filterNodes = { this.filterNodes }
+                  currentColor = { this.state.color }
+                  selectColor = { this.selectColor }
+                  toggleAddNode = { this.toggleAddNode }
+                  redSelected = { this.state.redSelected }
+                  blueSelected = { this.state.blueSelected }
+                  greenSelected = { this.state.greenSelected }/>
+              </Col>
+            ) : null
+          }
         </Row>
       </Grid>
     );

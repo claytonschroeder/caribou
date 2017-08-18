@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
-import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio, Checkbox } from 'react-bootstrap';
+import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio, Checkbox, Alert } from 'react-bootstrap';
 import Toggle from 'react-bootstrap-toggle';
 
 class Toolbox extends Component {
@@ -18,6 +18,20 @@ class Toolbox extends Component {
   onToggle() {
     this.props.toggleAddNode(!this.state.toggleActive)
     this.setState({ toggleActive: !this.state.toggleActive });
+  }
+
+  shouldDisplayAlert(color){
+    switch(color){
+      case 'red':
+        return !this.props.redSelected ? true : false
+      break;
+      case 'blue':
+        return !this.props.blueSelected ? true : false
+      break;
+      case 'green':
+        return !this.props.greenSelected ? true : false
+      break;
+    }
   }
 
   updateFilter(color){
@@ -39,9 +53,15 @@ class Toolbox extends Component {
   }
 
   render() {
+      const displayAlert = this.shouldDisplayAlert(this.props.currentColor)
+      const alert = displayAlert ? (
+        <Alert bsStyle="warning">
+          <strong>Warning: </strong> You have selected a color that is currently hidden in the filter views panel. You will not be able to see your node.
+        </Alert>
+      ) : null
       const colorPicker = (
         <FormGroup>
-          <p>Select the color for your new node</p>
+          <p>Select a color for your new node</p>
           <Radio name="colorPickerToolbox" inline value="red" defaultChecked={ this.props.currentColor === 'red' ? true : false } onClick={ this.setColor }>
             Red
           </Radio>
@@ -53,6 +73,7 @@ class Toolbox extends Component {
           <Radio name="colorPickerToolbox" inline value="green" defaultChecked={ this.props.currentColor === 'green' ? true : false } onClick={ this.setColor }>
             Green
           </Radio>
+          { alert }
         </FormGroup>
       )
       const toolbox = (
@@ -74,7 +95,7 @@ class Toolbox extends Component {
 
 
             <Tab eventKey={2} title="Filter View">
-              <p>Select which color nodes you would like to display</p>
+              <p>Select which nodes you would like to display:</p>
               <FormGroup>
                 <Checkbox inline value='red' ref='red' defaultChecked={ this.props.redSelected ? true : false } onClick={ this.updateFilter }>
                   Red

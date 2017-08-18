@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
-import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio } from 'react-bootstrap';
 
 class Editor extends Component {
   constructor(props) {
@@ -12,7 +12,12 @@ class Editor extends Component {
     this.updateName = this.updateName.bind(this);
     this.deleteNode = this.deleteNode.bind(this);
     this.addNew = this.addNew.bind(this);
+    this.setColor = this.setColor.bind(this);
 
+  }
+
+  setColor(color, id){
+    this.props.changeColor(id, color.currentTarget.value)
   }
 
   addNew(node){
@@ -260,6 +265,23 @@ class Editor extends Component {
               }
             <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New</Button>
             </Tab>
+
+            <Tab eventKey={5} title="Color">
+              <FormGroup>
+                <Radio name="colorPicker" inline value="red" defaultChecked={ node.color === 'red' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                  Red
+                </Radio>
+                {'  '}
+                <Radio name="colorPicker" inline value="blue" defaultChecked={ node.color === 'blue' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                  Blue
+                </Radio>
+                {'  '}
+                <Radio name="colorPicker" inline value="green" defaultChecked={ node.color === 'green' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                  Green
+                </Radio>
+              </FormGroup>
+            </Tab>
+
           </Tabs>
           <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteNode(node) } >Delete</Button>
         </Panel>

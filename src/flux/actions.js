@@ -137,6 +137,21 @@ export default function(store) {
 
       // update the node in the state array
       store.updateNode(node.id, node);
+    },
+    changeColor: (id, color) => {
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+      console.log('before: ', node)
+      // change the color of the node
+      node.color = color;
+
+      console.log("after: ", node)
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
     }
   }
 }

@@ -26,15 +26,15 @@ class Toolbox extends Component {
   render() {
       const colorPicker = (
         <FormGroup>
-          <Radio name="colorPicker" inline value="red" defaultChecked={ this.props.currentColor === 'red' ? true : false } onClick={ this.setColor }>
+          <Radio name="colorPickerToolbox" inline value="red" defaultChecked={ this.props.currentColor === 'red' ? true : false } onClick={ this.setColor }>
             Red
           </Radio>
           {'  '}
-          <Radio name="colorPicker" inline value="blue" defaultChecked={ this.props.currentColor === 'blue' ? true : false } onClick={ this.setColor }>
+          <Radio name="colorPickerToolbox" inline value="blue" defaultChecked={ this.props.currentColor === 'blue' ? true : false } onClick={ this.setColor }>
             Blue
           </Radio>
           {'  '}
-          <Radio name="colorPicker" inline value="green" defaultChecked={ this.props.currentColor === 'green' ? true : false } onClick={ this.setColor }>
+          <Radio name="colorPickerToolbox" inline value="green" defaultChecked={ this.props.currentColor === 'green' ? true : false } onClick={ this.setColor }>
             Green
           </Radio>
         </FormGroup>

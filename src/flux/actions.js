@@ -1,3 +1,6 @@
+import newNodeTemplate from '../lib/nodeTemplate.json'
+const ObjectUtil = require('../utilities/objectCopy.js');
+
 export default function(store) {
   return {
     updateName: (id, data) => {
@@ -78,6 +81,18 @@ export default function(store) {
 
       store.updateNodeArray(newNodeArray);
     },
+    addNewNode: (x, y, color) => {
+      let nodeArray = store.getState().nodes;
+      let random = Math.random()*1000000;
+      let newId = Math.round(random);
+      let blankTemplate = ObjectUtil.copy(newNodeTemplate);
+      blankTemplate.id = newId;
+      blankTemplate.x = x;
+      blankTemplate.y = y - 10;
+      blankTemplate.color = color;
+      nodeArray.push(blankTemplate);
+      store.updateNodeArray(nodeArray);
+    },
     addNewStrongEvidence: (id) => {
       const strongTemplate = {
         "detail": null,
@@ -144,11 +159,8 @@ export default function(store) {
 
       // create a copy of that node object
       const node = { ...store.getState().nodes[index] };
-      console.log('before: ', node)
       // change the color of the node
       node.color = color;
-
-      console.log("after: ", node)
 
       // update the node in the state array
       store.updateNode(node.id, node);

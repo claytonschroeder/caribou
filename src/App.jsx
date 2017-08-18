@@ -7,10 +7,6 @@ import Toolbox from './components/Toolbox.jsx'
 
 import { Grid, Col, Row } from 'react-bootstrap';
 
-import newNodeTemplate from './lib/nodeTemplate.json'
-
-const ObjectUtil = require('./utilities/objectCopy.js');
-
 import store from './flux/store.js';
 import actions from './flux/actions.js';
 
@@ -70,22 +66,7 @@ class App extends Component {
 
   /* Generate a new node on the image container */
   newNode(x, y, color){
-    let random = Math.random()*1000000;
-    let newId = Math.round(random);
-    let blankTemplate = ObjectUtil.copy(newNodeTemplate);
-    let nodeArray = this.state.nodes;
-    blankTemplate.id = newId;
-    blankTemplate.x = x;
-    blankTemplate.y = y - 10;
-    blankTemplate.color = color;
-    nodeArray.push(blankTemplate);
-    this.setState({
-      nodes: nodeArray,
-      selectedNode: null,
-      editNode: blankTemplate,
-      shouldDisplayInfo: false,
-      shouldDisplayEditor: true
-    })
+    this.actions.addNewNode(x, y, color)
   }
 
   /* Select the Node you want to display the edit container for */

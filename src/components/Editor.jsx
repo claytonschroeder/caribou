@@ -268,15 +268,15 @@ class Editor extends Component {
 
             <Tab eventKey={5} title="Color">
               <FormGroup>
-                <Radio name="colorPicker" inline value="red" defaultChecked={ node.color === 'red' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                <Radio name="colorPickerEditor" inline value="red" defaultChecked={ this.props.node.color === 'red' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
                   Red
                 </Radio>
                 {'  '}
-                <Radio name="colorPicker" inline value="blue" defaultChecked={ node.color === 'blue' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                <Radio name="colorPickerEditor" inline value="blue" defaultChecked={ this.props.node.color === 'blue' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
                   Blue
                 </Radio>
                 {'  '}
-                <Radio name="colorPicker" inline value="green" defaultChecked={ node.color === 'green' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                <Radio name="colorPickerEditor" inline value="green" defaultChecked={ this.props.node.color === 'green' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
                   Green
                 </Radio>
               </FormGroup>

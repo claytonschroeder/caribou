@@ -4,8 +4,10 @@
   width: 30px;
   border-radius: 50%;
   z-index: 999;
+  transition: all .2s ease-in-out;
 }
 
 .single-node:hover {
   cursor: pointer;
+  transform: scale(1.1);
 }

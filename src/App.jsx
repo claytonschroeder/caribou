@@ -23,6 +23,7 @@ class App extends Component {
       shouldDisplayInfo: true,
       shouldDisplayEditor: false,
       addNodeEnabled: false,
+      viewLegend: false,
       color: 'red',
       redSelected: true,
       blueSelected: true,
@@ -41,6 +42,7 @@ class App extends Component {
     this.selectColor = this.selectColor.bind(this);
     this.filterNodes = this.filterNodes.bind(this);
     this.updateImageURL = this.updateImageURL.bind(this);
+    this.toggleViewLegend = this.toggleViewLegend.bind(this);
   }
 
   updateNodes() {
@@ -94,6 +96,12 @@ class App extends Component {
   toggleAddNode(state){
     this.setState({
       addNodeEnabled: state
+    })
+  }
+
+  toggleViewLegend(state){
+    this.setState({
+      viewLegend: state
     })
   }
 
@@ -161,6 +169,7 @@ class App extends Component {
     return (
       <Grid>
         <Nodes
+          viewLegend = { this.state.viewLegend }
           updateImageURL = { this.updateImageURL }
           image = { this.state.image }
           addNodeEnabled = { this.state.addNodeEnabled }
@@ -172,21 +181,22 @@ class App extends Component {
           blueSelected = { this.state.blueSelected }
           greenSelected = { this.state.greenSelected } />
         <Row>
-          <Col xs={12} md={8} style={{display: this.state.shouldDisplayInfo ? 'block' : 'none'}}>
+          <Col className='info-container' xs={12} md={8} style={{display: this.state.shouldDisplayInfo ? 'block' : 'none'}}>
             { nodeInfo }
           </Col>
 
-          <Col xs={12} md={8} style={{display: this.state.shouldDisplayEditor ? 'block' : 'none'}}>
+          <Col className='editor-container' xs={12} md={8} style={{display: this.state.shouldDisplayEditor ? 'block' : 'none'}}>
             { nodeEdit }
           </Col>
 
-          <Col xs={12} md={8} style={{display: !this.state.shouldDisplayEditor && !this.state.shouldDisplayInfo ? 'block' : 'none'}}>
+          <Col className='dummy-container' xs={12} md={8} style={{display: !this.state.shouldDisplayEditor && !this.state.shouldDisplayInfo ? 'block' : 'none'}}>
           </Col>
 
           {
             this.state.image ? (
-              <Col xs={12} md={4}>
+              <Col className='toolbox-container' xs={12} md={4}>
                 <Toolbox
+                  toggleViewLegend = { this.toggleViewLegend }
                   filterNodes = { this.filterNodes }
                   currentColor = { this.state.color }
                   selectColor = { this.selectColor }

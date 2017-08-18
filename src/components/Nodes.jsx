@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, HelpBlock, Button } from 'react-bootstrap';
 import Node from './Node.jsx'
+import Legend from './Legend.jsx'
 
 class Nodes extends Component {
   constructor(props) {
@@ -42,8 +43,8 @@ class Nodes extends Component {
 
     const nodes = this.props.nodes.map((node) => {
       return <Node
-        key = {node.id}
-        data = {node}
+        key = { node.id }
+        data = { node }
         selectNode = {this.selectNode}
         redSelected = { this.props.redSelected }
         blueSelected = { this.props.blueSelected }
@@ -55,6 +56,12 @@ class Nodes extends Component {
       <Col className='image-container' xs={12} md={12}>
         <img className='image' src={ this.props.image } onClick={ this.props.addNodeEnabled ? this.getLocation : null} style={ imageStyle }>
         </img>
+        {
+          this.props.viewLegend ? (
+            <Legend
+              nodes={ this.props.nodes } />
+          ) : null
+        }
         { nodes }
       </Col>
     ) : (

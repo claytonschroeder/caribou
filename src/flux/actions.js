@@ -77,6 +77,66 @@ export default function(store) {
       })
 
       store.updateNodeArray(newNodeArray);
+    },
+    addNewStrongEvidence: (id) => {
+      const strongTemplate = {
+        "detail": null,
+        "references": [
+          {
+            "id": null,
+            "link": null
+          }
+        ]
+      }
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      // push a blank row onto the array
+      node.notes.strongEvidence.push(strongTemplate);
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    },
+    addNewWeakEvidence: (id) => {
+      const weakTemplate = {
+        "detail": null,
+        "references": [
+          {
+            "id": null,
+            "link": null
+          }
+        ]
+      }
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      // push a blank row onto the array
+      node.notes.weakEvidence.push(weakTemplate);
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    },
+    addNewUncertainEvidence: (id) => {
+      const uncertainTemplate = {
+        "detail": null
+      }
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      // push a blank row onto the array
+      node.notes.uncertain.push(uncertainTemplate);
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
     }
   }
 }

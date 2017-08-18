@@ -11,7 +11,22 @@ class Editor extends Component {
     this.saveChanges = this.saveChanges.bind(this);
     this.updateName = this.updateName.bind(this);
     this.deleteNode = this.deleteNode.bind(this);
+    this.addNew = this.addNew.bind(this);
 
+  }
+
+  addNew(node){
+    switch(this.state.activeTab){
+      case 2:
+        this.props.addNewStrongEvidence(node.id);
+      break;
+      case 3:
+        this.props.addNewWeakEvidence(node.id);
+      break;
+      case 4:
+        this.props.addNewUncertainEvidence(node.id);
+      break;
+    }
   }
 
   saveChanges(node){
@@ -181,6 +196,7 @@ class Editor extends Component {
                   )
                 })
               }
+            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New</Button>
             </Tab>
 
 
@@ -221,6 +237,7 @@ class Editor extends Component {
                   )
                 })
               }
+            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New</Button>
             </Tab>
 
 
@@ -241,6 +258,7 @@ class Editor extends Component {
                   )
                 })
               }
+            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New</Button>
             </Tab>
           </Tabs>
           <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteNode(node) } >Delete</Button>

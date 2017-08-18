@@ -81,9 +81,10 @@ class App extends Component {
     nodeArray.push(blankTemplate);
     this.setState({
       nodes: nodeArray,
-      selectedNode: blankTemplate,
-      editNode: null,
-      shouldDisplayInfo: true
+      selectedNode: null,
+      editNode: blankTemplate,
+      shouldDisplayInfo: false,
+      shouldDisplayEditor: true
     })
   }
 

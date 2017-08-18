@@ -45,7 +45,7 @@ class Info extends Component {
                       </div>
                     )
                   } else {
-                    return <p>no strong evidence given for this node</p>
+                    return null
                   }
                 })
               }
@@ -70,7 +70,7 @@ class Info extends Component {
                       </div>
                     )
                   } else {
-                    return <p>no weak or conflicting evidence given for this node</p>
+                    return null
                   }
                 })
               }
@@ -86,7 +86,7 @@ class Info extends Component {
                       </div>
                     )
                   } else {
-                    return <p>no uncertain evidence given for this node</p>
+                    return null
                   }
                 })
               }

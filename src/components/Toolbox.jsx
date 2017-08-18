@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
-import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio } from 'react-bootstrap';
+import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio, Checkbox } from 'react-bootstrap';
 import Toggle from 'react-bootstrap-toggle';
 
 class Toolbox extends Component {
@@ -26,15 +26,15 @@ class Toolbox extends Component {
   render() {
       const colorPicker = (
         <FormGroup>
-          <Radio name="colorPicker" inline value="red" checked={ this.props.currentColor === 'red' ? true : false } onClick={ this.setColor }>
+          <Radio name="colorPicker" inline value="red" defaultChecked={ this.props.currentColor === 'red' ? true : false } onClick={ this.setColor }>
             Red
           </Radio>
           {'  '}
-          <Radio name="colorPicker" inline value="blue" checked={ this.props.currentColor === 'blue' ? true : false } onClick={ this.setColor }>
+          <Radio name="colorPicker" inline value="blue" defaultChecked={ this.props.currentColor === 'blue' ? true : false } onClick={ this.setColor }>
             Blue
           </Radio>
           {'  '}
-          <Radio name="colorPicker" inline value="green" checked={ this.props.currentColor === 'green' ? true : false } onClick={ this.setColor }>
+          <Radio name="colorPicker" inline value="green" defaultChecked={ this.props.currentColor === 'green' ? true : false } onClick={ this.setColor }>
             Green
           </Radio>
         </FormGroup>
@@ -56,7 +56,7 @@ class Toolbox extends Component {
 
 
             <Tab eventKey={2} title="Filter View">
-              <p>Some tool to only show the nodes of a selected color</p>
+              <p>some way to filter which nodes you can and cant see</p>
             </Tab>
           </Tabs>
         </Panel>

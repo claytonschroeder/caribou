@@ -3,6 +3,7 @@
   "x": null,
   "y": null,
   "color": "red",
+  "hidden": false,
   "name": null,
   "notes": {
     "summary": {

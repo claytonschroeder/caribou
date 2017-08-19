@@ -13,6 +13,11 @@ class Nodes extends Component {
     this.selectNode = this.selectNode.bind(this);
     this.sendUrl = this.sendUrl.bind(this);
     this.imageURL = this.imageURL.bind(this);
+    this.hideNode = this.hideNode.bind(this);
+  }
+
+  hideNode(id){
+    this.props.hideNode(id)
   }
 
   getLocation(clickEvent){
@@ -59,6 +64,8 @@ class Nodes extends Component {
         {
           this.props.viewLegend ? (
             <Legend
+              hideNode = { this.hideNode }
+              selectNode = {this.selectNode}
               nodes={ this.props.nodes } />
           ) : null
         }

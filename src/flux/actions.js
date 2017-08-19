@@ -87,8 +87,8 @@ export default function(store) {
       let newId = Math.round(random);
       let blankTemplate = ObjectUtil.copy(newNodeTemplate);
       blankTemplate.id = newId;
-      blankTemplate.x = x;
-      blankTemplate.y = y - 10;
+      blankTemplate.x = x - 15;
+      blankTemplate.y = y - 15;
       blankTemplate.color = color;
       nodeArray.push(blankTemplate);
       store.updateNodeArray(nodeArray);
@@ -161,6 +161,18 @@ export default function(store) {
       const node = { ...store.getState().nodes[index] };
       // change the color of the node
       node.color = color;
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    },
+    hideNode: (id) => {
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+      // change the color of the node
+      node.hidden = !node.hidden;
 
       // update the node in the state array
       store.updateNode(node.id, node);

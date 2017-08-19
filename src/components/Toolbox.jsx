@@ -9,7 +9,7 @@ class Toolbox extends Component {
     this.state = {
       activeTab: 1,
       toggleActive: false,
-      toggleActiveLegend: false
+      toggleActiveLegend: true
     }
     this.onToggle = this.onToggle.bind(this);
     this.onToggleLegend = this.onToggleLegend.bind(this);

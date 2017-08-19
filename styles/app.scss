@@ -53,14 +53,23 @@ p {
     max-height: 200px;
     overflow: scroll;
   }
+  .checkbox-inline {
+    margin-top: 2px;
+  }
   .legend-item {
     display: flex;
+    .legend-detail {
+      display: flex;
+    }
     .icon {
       margin: 5px;
     }
     span {
       line-height: 25px
     }
+  }
+  .legend-item:hover {
+    cursor: pointer;
   }
 }
 

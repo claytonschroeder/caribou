@@ -23,7 +23,7 @@ class App extends Component {
       shouldDisplayInfo: true,
       shouldDisplayEditor: false,
       addNodeEnabled: false,
-      viewLegend: false,
+      viewLegend: true,
       color: 'red',
       redSelected: true,
       blueSelected: true,
@@ -43,12 +43,17 @@ class App extends Component {
     this.filterNodes = this.filterNodes.bind(this);
     this.updateImageURL = this.updateImageURL.bind(this);
     this.toggleViewLegend = this.toggleViewLegend.bind(this);
+    this.hideNode = this.hideNode.bind(this);
   }
 
   updateNodes() {
     this.setState({
       nodes: this.store.getState().nodes
     })
+  }
+
+  hideNode(id){
+    this.actions.hideNode(id);
   }
 
   updateImageURL(url){
@@ -169,6 +174,7 @@ class App extends Component {
     return (
       <Grid>
         <Nodes
+          hideNode = { this.hideNode }
           viewLegend = { this.state.viewLegend }
           updateImageURL = { this.updateImageURL }
           image = { this.state.image }

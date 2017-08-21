@@ -176,6 +176,38 @@ export default function(store) {
 
       // update the node in the state array
       store.updateNode(node.id, node);
-    }
+    },
+    addNewStrongReference: (id, i) => {
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      let random = Math.random()*1000000;
+      let newId = Math.round(random);
+
+      // modify the specific item inside the node
+      node.notes.strongEvidence[i].references.push({"id": newId, "link": ''});
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    },
+    addNewWeakReference: (id, i) => {
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      let random = Math.random()*1000000;
+      let newId = Math.round(random);
+
+      // modify the specific item inside the node
+      node.notes.weakEvidence[i].references.push({"id": newId, "link": ''});
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    },
   }
 }

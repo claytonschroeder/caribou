@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import Nodes from './components/Nodes.jsx'
 import Info from './components/Info.jsx'
 import Editor from './components/Editor.jsx'
 import Toolbox from './components/Toolbox.jsx'
+import Header from './components/Header.jsx'
 
 import { Grid, Col, Row } from 'react-bootstrap';
 
@@ -44,7 +45,18 @@ class App extends Component {
     this.updateImageURL = this.updateImageURL.bind(this);
     this.toggleViewLegend = this.toggleViewLegend.bind(this);
     this.hideNode = this.hideNode.bind(this);
+    this.closeEditor = this.closeEditor.bind(this);
   }
+
+  closeEditor(node){
+    this.setState({
+      shouldDisplayInfo: true,
+      shouldDisplayEditor: false,
+      editNode: null,
+      selectedNode: node
+    })
+  }
+
 
   updateNodes() {
     this.setState({
@@ -164,6 +176,7 @@ class App extends Component {
     nodeEdit = this.state.editNode ?  (
       <Editor
         { ...this.actions }
+        closeEditor = { this.closeEditor }
         node = { this.state.editNode }
         updateEditState = { this.updateEditState }
         sendEdits = { this.sendEdits } />
@@ -172,49 +185,55 @@ class App extends Component {
 
 
     return (
-      <Grid>
-        <Nodes
-          hideNode = { this.hideNode }
-          viewLegend = { this.state.viewLegend }
-          updateImageURL = { this.updateImageURL }
-          image = { this.state.image }
-          addNodeEnabled = { this.state.addNodeEnabled }
-          nodes = { this.state.nodes }
-          selectNode = { this.selectNode }
-          newNode = { this.newNode }
-          color = { this.state.color }
-          redSelected = { this.state.redSelected }
-          blueSelected = { this.state.blueSelected }
-          greenSelected = { this.state.greenSelected } />
-        <Row>
-          <Col className='info-container' xs={12} md={8} style={{display: this.state.shouldDisplayInfo ? 'block' : 'none'}}>
-            { nodeInfo }
-          </Col>
+      <div>
+        <Grid className='header-grid'>
+          <Header />
+        </Grid>
+        <Grid>
+          <Nodes
+            hideNode = { this.hideNode }
+            viewLegend = { this.state.viewLegend }
+            updateImageURL = { this.updateImageURL }
+            image = { this.state.image }
+            addNodeEnabled = { this.state.addNodeEnabled }
+            nodes = { this.state.nodes }
+            selectNode = { this.selectNode }
+            selectedNode = { this.state.selectedNode }
+            newNode = { this.newNode }
+            color = { this.state.color }
+            redSelected = { this.state.redSelected }
+            blueSelected = { this.state.blueSelected }
+            greenSelected = { this.state.greenSelected } />
+          <Row>
+            <Col className='info-container' xs={12} md={8} style={{display: this.state.shouldDisplayInfo ? 'block' : 'none'}}>
+              { nodeInfo }
+            </Col>
 
-          <Col className='editor-container' xs={12} md={8} style={{display: this.state.shouldDisplayEditor ? 'block' : 'none'}}>
-            { nodeEdit }
-          </Col>
+            <Col className='editor-container' xs={12} md={8} style={{display: this.state.shouldDisplayEditor ? 'block' : 'none'}}>
+              { nodeEdit }
+            </Col>
 
-          <Col className='dummy-container' xs={12} md={8} style={{display: !this.state.shouldDisplayEditor && !this.state.shouldDisplayInfo ? 'block' : 'none'}}>
-          </Col>
+            <Col className='dummy-container' xs={12} md={8} style={{display: !this.state.shouldDisplayEditor && !this.state.shouldDisplayInfo ? 'block' : 'none'}}>
+            </Col>
 
-          {
-            this.state.image ? (
-              <Col className='toolbox-container' xs={12} md={4}>
-                <Toolbox
-                  toggleViewLegend = { this.toggleViewLegend }
-                  filterNodes = { this.filterNodes }
-                  currentColor = { this.state.color }
-                  selectColor = { this.selectColor }
-                  toggleAddNode = { this.toggleAddNode }
-                  redSelected = { this.state.redSelected }
-                  blueSelected = { this.state.blueSelected }
-                  greenSelected = { this.state.greenSelected }/>
-              </Col>
-            ) : null
-          }
-        </Row>
-      </Grid>
+            {
+              this.state.image ? (
+                <Col className='toolbox-container' xs={12} md={4}>
+                  <Toolbox
+                    toggleViewLegend = { this.toggleViewLegend }
+                    filterNodes = { this.filterNodes }
+                    currentColor = { this.state.color }
+                    selectColor = { this.selectColor }
+                    toggleAddNode = { this.toggleAddNode }
+                    redSelected = { this.state.redSelected }
+                    blueSelected = { this.state.blueSelected }
+                    greenSelected = { this.state.greenSelected }/>
+                </Col>
+              ) : null
+            }
+          </Row>
+        </Grid>
+      </div>
     );
   }
 }

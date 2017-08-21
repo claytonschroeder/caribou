@@ -29,8 +29,9 @@ class Node extends Component {
       display: display,
       visibility: visibility
     }
+    const klass = ( this.props.selectedNode && this.props.selectedNode.id === this.props.data.id) ? 'single-node-selected' : 'single-node'
     return (
-      <div className='single-node' style={nodeStyle} onClick={ () => this.props.selectNode(this.props.data.id) }>
+      <div className={ klass } style={nodeStyle} onClick={ () => this.props.selectNode(this.props.data.id) }>
       </div>
     );
   }

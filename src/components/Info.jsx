@@ -16,6 +16,9 @@ class Info extends Component {
     let nodeInfo;
 
     const node = this.props.node
+    const strongCount = node.notes.strongEvidence[0].detail ? node.notes.strongEvidence.length : 0;
+    const weakCount = node.notes.weakEvidence[0].detail ? node.notes.weakEvidence.length : 0
+    const uncertainCount = node.notes.uncertain[0].detail ? node.notes.uncertain.length : 0
 
     if(node){
       nodeInfo = (
@@ -26,7 +29,7 @@ class Info extends Component {
               <p>{ node.notes.summary.description ? node.notes.summary.description : 'no description given for this node'}</p>
             </Tab>
 
-            <Tab eventKey={2} title="Strong Evidence">
+            <Tab eventKey={2} title={ `Strong Evidence - (${strongCount})` }>
               {
                 node.notes.strongEvidence.map((evidence, i) => {
                   if(evidence.detail){
@@ -37,7 +40,9 @@ class Info extends Component {
                           {
                             evidence.references.map((reference, index) => {
                               return (
-                                <Button key={ index } bsStyle="link" href={ reference.link }>{ reference.link }</Button>
+                                <li key={ index }>
+                                  <a href={ reference.link }>{ reference.link }</a>
+                                </li>
                               )
                             })
                           }
@@ -51,7 +56,7 @@ class Info extends Component {
               }
             </Tab>
 
-            <Tab eventKey={3} title="Weak/Conflicting Evidence">
+            <Tab eventKey={3} title={ `Weak/Conflicting Evidence - (${weakCount})` }>
               {
                 node.notes.weakEvidence.map((evidence, i) => {
                   if(evidence.detail){
@@ -62,7 +67,9 @@ class Info extends Component {
                           {
                             evidence.references.map((reference, index) => {
                               return (
-                                <Button key={ index } bsStyle="link" href={ reference.link }>{ reference.link }</Button>
+                                <li key={ index }>
+                                  <a href={ reference.link }>{ reference.link }</a>
+                                </li>
                               )
                             })
                           }
@@ -76,7 +83,7 @@ class Info extends Component {
               }
             </Tab>
 
-            <Tab eventKey={4} title="Uncertain">
+            <Tab eventKey={4} title={ `Uncertain Evidence - (${uncertainCount})` }>
               {
                 node.notes.uncertain.map((evidence, i) => {
                   if(evidence.detail){

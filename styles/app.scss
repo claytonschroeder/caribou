@@ -28,7 +28,27 @@ p {
   overflow: scroll;
   .image {
     width: initial !important;
+    max-width: 1500px;
   }
+}
+
+.image-container::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.image-container::-webkit-scrollbar:horizontal {
+  height: 16px;
+}
+
+.image-container::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white;
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.image-container::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 8px;
 }
 
 .add-image {
@@ -81,7 +101,7 @@ p {
   margin-left: 10px;
 }
 
-.info-container, dummy-container, editor-container {
+.info-container, .dummy-container, .editor-container {
   padding-left: 0px !important;
   padding-right: 5px !important;
 }
@@ -95,4 +115,12 @@ p {
   display: flex;
 }
 
+.header-grid {
+  padding: 0px;
+  margin-top: 10px;
+}
+
+.navbar {
+  margin-bottom: 0px !important;
+}
 

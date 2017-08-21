@@ -68,7 +68,7 @@ class Toolbox extends Component {
       ) : null
       const colorPicker = (
         <FormGroup>
-          <p>Select a color for your new node</p>
+          <p>Select a color for your node:</p>
           <div className='radio-button-container'>
             <Radio name="colorPickerToolbox" inline value="red" defaultChecked={ this.props.currentColor === 'red' ? true : false } onClick={ this.setColor }>
               Red
@@ -86,7 +86,7 @@ class Toolbox extends Component {
         </FormGroup>
       )
       const toolbox = (
-        <Panel id="toolbox-panel" header="Toolbox" bsStyle="success">
+        <Panel id="toolbox-panel" header="Toolbox">
           <Tabs defaultActiveKey={1} onSelect={ key => this.setState({activeTab: key}) } id="uncontrolled-tab-example">
 
             <Tab eventKey={1} title="Add Nodes">

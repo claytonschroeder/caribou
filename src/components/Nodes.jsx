@@ -48,6 +48,7 @@ class Nodes extends Component {
 
     const nodes = this.props.nodes.map((node) => {
       return <Node
+        selectedNode = { this.props.selectedNode }
         key = { node.id }
         data = { node }
         selectNode = {this.selectNode}

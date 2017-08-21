@@ -13,7 +13,7 @@ class Editor extends Component {
     this.deleteNode = this.deleteNode.bind(this);
     this.addNew = this.addNew.bind(this);
     this.setColor = this.setColor.bind(this);
-
+    this.addNewReference = this.addNewReference.bind(this);
   }
 
   setColor(color, id){
@@ -30,6 +30,19 @@ class Editor extends Component {
       break;
       case 4:
         this.props.addNewUncertainEvidence(node.id);
+      break;
+    }
+  }
+
+  addNewReference(node, i){
+    console.log('add reference: ', node)
+    console.log('at index: ', i)
+    switch(this.state.activeTab){
+      case 2:
+        this.props.addNewStrongReference(node.id, i)
+      break;
+      case 3:
+        this.props.addNewWeakReference(node.id, i)
       break;
     }
   }
@@ -191,17 +204,22 @@ class Editor extends Component {
                                     ref={ `strong-link-${i}-${index}` }
                                     onChange= { () => this.saveChanges(node) }
                                     defaultValue={ reference.link ? reference.link : '' } />
+                                    <FormControl
+                                      type="file"
+                                      label="File"
+                                    />
                                 </FormGroup>
                               </form>
                             )
                           })
                         }
+                      <Button id="add-reference-button" bsStyle="success" onClick={ () => this.addNewReference(node, i) } >Add Reference</Button>
                       </ul>
                     </div>
                   )
                 })
               }
-            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New</Button>
+            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add Evidence</Button>
             </Tab>
 
 
@@ -237,6 +255,7 @@ class Editor extends Component {
                             )
                           })
                         }
+                      <Button id="add-reference-button" bsStyle="success" onClick={ () => this.addNewReference(node, i) } >Add Reference</Button>
                       </ul>
                     </div>
                   )
@@ -263,7 +282,7 @@ class Editor extends Component {
                   )
                 })
               }
-            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New</Button>
+            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add Evidence</Button>
             </Tab>
 
             <Tab eventKey={5} title="Color">
@@ -284,6 +303,7 @@ class Editor extends Component {
 
           </Tabs>
           <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteNode(node) } >Delete</Button>
+          <Button id="delete-button" onClick={ () => this.props.closeEditor(node) } >Close</Button>
         </Panel>
       )
     } else {

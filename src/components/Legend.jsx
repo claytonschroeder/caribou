@@ -10,7 +10,7 @@ class Legend extends Component {
     return(
       <Panel className='legend' header={ 'Legend' }>
         {
-          this.props.nodes.map((node, index) => {
+          this.props.nodes.length > 0 ? this.props.nodes.map((node, index) => {
             return (
               <div key={ index } className='legend-item'>
                 <Checkbox inline defaultChecked={ !node.hidden } onClick={ () => this.props.hideNode(node.id) }>
@@ -24,7 +24,7 @@ class Legend extends Component {
                 </div>
               </div>
             )
-          })
+          }) : <span>No data to display</span>
         }
       </Panel>
     )

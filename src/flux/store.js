@@ -2,8 +2,8 @@ const state = {
   nodes: [
     {
       id: 12341412341,
-      x: 200,
-      y: 200,
+      x: 173,
+      y: 165,
       name: 'English Bay',
       color: 'red',
       hidden: false,

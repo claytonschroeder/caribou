@@ -1,6 +1,3 @@
-import newNodeTemplate from '../lib/nodeTemplate.json'
-const ObjectUtil = require('../utilities/objectCopy.js');
-
 export default function(store) {
   return {
     updateName: (id, data) => {
@@ -81,16 +78,14 @@ export default function(store) {
 
       store.updateNodeArray(newNodeArray);
     },
-    addNewNode: (x, y, color) => {
+    addNewNode: (blankTemplate) => {
+      // create a copy of the current nodes
       let nodeArray = store.getState().nodes;
-      let random = Math.random()*1000000;
-      let newId = Math.round(random);
-      let blankTemplate = ObjectUtil.copy(newNodeTemplate);
-      blankTemplate.id = newId;
-      blankTemplate.x = x - 15;
-      blankTemplate.y = y - 15;
-      blankTemplate.color = color;
+
+      // push the new node object onto the array
       nodeArray.push(blankTemplate);
+
+      // update the state of node array
       store.updateNodeArray(nodeArray);
     },
     addNewStrongEvidence: (id) => {

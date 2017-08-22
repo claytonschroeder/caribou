@@ -26,13 +26,13 @@ class Node extends Component {
     const display = this.shouldDisplay(this.props.data.color)
     const visibility = this.props.data.hidden ? 'hidden' : 'visible'
     let nodeStyle = {
-      left: this.props.data.x + 'px',
-      top: this.props.data.y + 'px',
+      left: (this.props.data.x - 5) + 'px',
+      top: (this.props.data.y - 5) + 'px',
       backgroundColor: this.props.data.color,
       display: display,
       visibility: visibility
     }
-    const klass = ( this.props.selectedNode && this.props.selectedNode.id === this.props.data.id) ? 'single-node-selected' : 'single-node'
+    const klass = ( (this.props.selectedNode && this.props.selectedNode.id === this.props.data.id) || (this.props.editNode && this.props.editNode.id === this.props.data.id) ) ? 'single-node-selected' : 'single-node'
     return (
       <div className={ klass } style={nodeStyle} onClick={ () => this.props.selectNode(this.props.data.id) }>
       </div>

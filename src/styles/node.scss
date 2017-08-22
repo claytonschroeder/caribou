@@ -1,7 +1,7 @@
 .single-node {
   position: absolute;
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   z-index: 999;
   transition: all .2s ease-in-out;
@@ -9,14 +9,15 @@
 
 .single-node-selected {
   position: absolute;
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   z-index: 999;
   transition: all .2s ease-in-out;
   -webkit-box-shadow:0 0 10px blue;
   -moz-box-shadow: 0 0 10px blue;
   box-shadow:0 0 10px blue;
+  transform: scale(1.1);
 }
 
 .single-node:hover {

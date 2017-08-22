@@ -8,6 +8,9 @@ import Header from './components/Header.jsx'
 
 import { Grid, Col, Row } from 'react-bootstrap';
 
+import newNodeTemplate from './lib/nodeTemplate.json'
+const ObjectUtil = require('./utilities/objectCopy.js');
+
 import store from './flux/store.js';
 import actions from './flux/actions.js';
 
@@ -51,10 +54,12 @@ class App extends Component {
     this.uploadImage = this.uploadImage.bind(this);
   }
 
+  /* If no image URL, you can upload a new image from your computer, called from Nodes component */
   uploadImage(file){
     this.setState({ image: file.base64 })
   }
 
+  /* close the editor and re-open the info box with the same node */
   closeEditor(node){
     this.setState({
       shouldDisplayInfo: true,
@@ -64,23 +69,26 @@ class App extends Component {
     })
   }
 
-
+  /* triggered by actions. anytime we edit, add or delete nodes this is called and updates the state of the node array */
   updateNodes() {
     this.setState({
       nodes: this.store.getState().nodes
     })
   }
 
+  /* Hide and show individual nodes using checkboxed in the Legend */
   hideNode(id){
     this.actions.hideNode(id);
   }
 
+  /* If no image URL, you can upload or provide a link to a new image, called from Nodes component */
   updateImageURL(url){
     this.setState({
       image: url
     })
   }
 
+  /* toggle which color nodes are visable using checkboxes in toolbox */
   filterNodes(color){
     switch(color){
       case 'red':
@@ -106,12 +114,14 @@ class App extends Component {
     }
   }
 
+  /* Select the color for any new nodes */
   selectColor(color){
     this.setState({
       color: color
     })
   }
 
+  /* Hide edit container and info container, this is called when a node is deleted in Editor */
   updateEditState(){
     this.setState({
       selectedNode: null,
@@ -121,12 +131,14 @@ class App extends Component {
     })
   }
 
+  /* Turn the ability to add new nodes on and off using toggle in toolbox */
   toggleAddNode(state){
     this.setState({
       addNodeEnabled: state
     })
   }
 
+  /* Hide and show the legend using the toggle in toolbox */
   toggleViewLegend(state){
     this.setState({
       viewLegend: state
@@ -135,7 +147,21 @@ class App extends Component {
 
   /* Generate a new node on the image container */
   newNode(x, y, color){
-    this.actions.addNewNode(x, y, color);
+    let random = Math.random()*1000000;
+    let newId = Math.round(random);
+    let blankTemplate = ObjectUtil.copy(newNodeTemplate);
+    blankTemplate.id = newId;
+    blankTemplate.x = x - 15;
+    blankTemplate.y = y - 15;
+    blankTemplate.color = color;
+
+    this.actions.addNewNode(blankTemplate);
+    this.setState({
+      selectedNode: null,
+      editNode: blankTemplate,
+      shouldDisplayInfo: false,
+      shouldDisplayEditor: true
+    })
   }
 
   /* Select the Node you want to display the edit container for */
@@ -211,6 +237,7 @@ class App extends Component {
             nodes = { this.state.nodes }
             selectNode = { this.selectNode }
             selectedNode = { this.state.selectedNode }
+            editNode = { this.state.editNode }
             newNode = { this.newNode }
             color = { this.state.color }
             redSelected = { this.state.redSelected }

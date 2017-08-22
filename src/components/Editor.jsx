@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
-import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio } from 'react-bootstrap';
+import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio, FieldGroup } from 'react-bootstrap';
 
 import FileBase64 from 'react-file-base64';
 
@@ -22,10 +22,12 @@ class Editor extends Component {
     this.addNewReference = this.addNewReference.bind(this);
     this.uploadAttachment = this.uploadAttachment.bind(this);
     this.getLocation = this.getLocation.bind(this);
+    this.removeAttachment = this.removeAttachment.bind(this);
+    this.removeLink = this.removeLink.bind(this);
   }
 
   uploadAttachment(file){
-    this.props.uploadAttachment(file, this.state.evidenceIndex, this.state.referenceIndex, this.state.currentId)
+    this.props.uploadAttachment(file, this.state.evidenceIndex, this.state.referenceIndex, this.state.currentId, this.state.activeTab)
   }
 
   getLocation(i, index, id){
@@ -34,6 +36,14 @@ class Editor extends Component {
       referenceIndex: index,
       currentId: id
     })
+  }
+
+  removeAttachment(i, index, id){
+    this.props.removeAttachment(i, index, id, this.state.activeTab)
+  }
+
+  removeLink(i, index, id){
+    this.props.removeLink(i, index, id, this.state.activeTab)
   }
 
   setColor(color, id){
@@ -59,8 +69,6 @@ class Editor extends Component {
   }
 
   addNewReference(node, i){
-    console.log('add reference: ', node)
-    console.log('at index: ', i)
     switch(this.state.activeTab){
       case 2:
         this.props.addNewStrongReference(node.id, i)
@@ -168,7 +176,6 @@ class Editor extends Component {
 
 
   render() {
-
     let editorForm;
 
     const node = this.props.node;
@@ -189,6 +196,9 @@ class Editor extends Component {
         <Panel id="info-panel" header={ title } bsStyle="warning">
           <Tabs defaultActiveKey={1} onSelect={ key => this.setState({activeTab: key}) } id="uncontrolled-tab-example">
 
+
+
+
             <Tab eventKey={1} title="Summary">
               <form>
                 <FormControl
@@ -199,6 +209,9 @@ class Editor extends Component {
                   defaultValue={ node.notes.summary.description ? node.notes.summary.description : '' } />
               </form>
             </Tab>
+
+
+
 
 
             <Tab eventKey={2} title="Strong Evidence">
@@ -224,28 +237,55 @@ class Editor extends Component {
                                 <FormGroup
                                   controlId="strongEvidenceReferenceText"
                                   onClick={ () => this.getLocation(i, index, node.id) }>
-                                  <FormControl
-                                    type="text"
-                                    placeholder="Enter your reference link"
-                                    ref={ `strong-link-${i}-${index}` }
-                                    onChange= { () => this.saveChanges(node) }
-                                    defaultValue={ reference.link ? reference.link : null } />
-                                    <FileBase64
-                                      multiple={ false }
-                                      onDone={ this.uploadAttachment } />
+                                  <div className='attached-link'>
+                                    <Button onClick={ () => this.removeLink(i, index, node.id) }bsStyle="danger">Remove Link</Button>
+                                    {
+                                      reference.link ? (
+                                        <FormControl
+                                          type="text"
+                                          placeholder="Enter your reference link"
+                                          ref={ `strong-link-${i}-${index}` }
+                                          onChange= { () => this.saveChanges(node) }
+                                          defaultValue={ reference.link } />
+                                      ) : (
+                                        <FormControl
+                                          type="text"
+                                          placeholder="Enter your reference link"
+                                          ref={ `strong-link-${i}-${index}` }
+                                          onChange= { () => this.saveChanges(node) }
+                                          defaultValue={ '' } />
+                                      )
+                                    }
+                                  </div>
+                                  {
+                                    reference.attachment ? (
+                                      <div className='attached-file'>
+                                        <Button onClick={ () => this.removeAttachment(i, index, node.id) }bsStyle="danger">Remove Attachment</Button>
+                                        <span className='attached-file-name'> { reference.fileName } </span>
+                                      </div>
+                                    ) : (
+                                      <FileBase64
+                                        multiple={ false }
+                                        onDone={ this.uploadAttachment } />
+                                    )
+                                  }
                                 </FormGroup>
                               </form>
                             )
                           })
                         }
-                      <Button id="add-reference-button" bsStyle="success" onClick={ () => this.addNewReference(node, i) } >Add Reference</Button>
+                      <Button id="add-reference-button" bsStyle="success" onClick={ () => this.addNewReference(node, i) } >Add New Reference</Button>
                       </ul>
                     </div>
                   )
                 })
               }
-            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add Evidence</Button>
+            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New Evidence</Button>
             </Tab>
+
+
+
+
 
 
             <Tab eventKey={3} title="Weak/Conflicting Evidence">
@@ -254,7 +294,7 @@ class Editor extends Component {
                   return (
                     <div key={ i }>
                       <form>
-                        <FormGroup controlId="strongEvidenceTextarea">
+                        <FormGroup controlId="weakEvidenceTextarea">
                           <FormControl
                             componentClass="textarea"
                             placeholder="Enter your evidence"
@@ -268,26 +308,57 @@ class Editor extends Component {
                           evidence.references.map((reference, index) => {
                             return (
                               <form key={ index }>
-                                <FormGroup controlId="strongEvidenceReferenceText">
-                                  <FormControl
-                                    type="text"
-                                    placeholder="Enter your reference link"
-                                    ref={ `weak-link-${i}-${index}` }
-                                    onChange= { () => this.saveChanges(node) }
-                                    defaultValue={ reference.link ? reference.link : '' } />
+                                <FormGroup
+                                  controlId="weakEvidenceReferenceText"
+                                  onClick={ () => this.getLocation(i, index, node.id) }>
+                                  <div className='attached-link'>
+                                    <Button onClick={ () => this.removeLink(i, index, node.id) }bsStyle="danger">Remove Link</Button>
+                                    {
+                                      reference.link ? (
+                                        <FormControl
+                                          type="text"
+                                          placeholder="Enter your reference link"
+                                          ref={ `weak-link-${i}-${index}` }
+                                          onChange= { () => this.saveChanges(node) }
+                                          defaultValue={ reference.link } />
+                                      ) : (
+                                        <FormControl
+                                          type="text"
+                                          placeholder="Enter your reference link"
+                                          ref={ `weak-link-${i}-${index}` }
+                                          onChange= { () => this.saveChanges(node) }
+                                          defaultValue={ '' } />
+                                      )
+                                    }
+                                  </div>
+                                  {
+                                    reference.attachment ? (
+                                      <div className='attached-file'>
+                                        <Button onClick={ () => this.removeAttachment(i, index, node.id) }bsStyle="danger">Remove Attachement</Button>
+                                        <span className='attached-file-name'> { reference.fileName } </span>
+                                      </div>
+                                    ) : (
+                                      <FileBase64
+                                        multiple={ false }
+                                        onDone={ this.uploadAttachment } />
+                                    )
+                                  }
                                 </FormGroup>
                               </form>
                             )
                           })
                         }
-                      <Button id="add-reference-button" bsStyle="success" onClick={ () => this.addNewReference(node, i) } >Add Reference</Button>
+                      <Button id="add-reference-button" bsStyle="success" onClick={ () => this.addNewReference(node, i) } >Add New Reference</Button>
                       </ul>
                     </div>
                   )
                 })
               }
-            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New</Button>
+            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New Evidence</Button>
             </Tab>
+
+
+
 
 
             <Tab eventKey={4} title="Uncertain">
@@ -312,18 +383,18 @@ class Editor extends Component {
 
             <Tab eventKey={5} title="Color">
               <FormGroup>
-                <Radio name="colorPickerEditor" inline value="red" defaultChecked={ this.props.node.color === 'red' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                <Radio name="colorPickerEditor" inline value="red" checked={ node.color === 'red' ? true : false } onChange={ (color) => this.setColor(color, node.id) }>
                   Red
                 </Radio>
                 {'  '}
-                <Radio name="colorPickerEditor" inline value="blue" defaultChecked={ this.props.node.color === 'blue' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                <Radio name="colorPickerEditor" inline value="blue" checked={ node.color === 'blue' ? true : false } onChange={ (color) => this.setColor(color, node.id) }>
                   Blue
                 </Radio>
                 {'  '}
-                <Radio name="colorPickerEditor" inline value="green" defaultChecked={ this.props.node.color === 'green' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                <Radio name="colorPickerEditor" inline value="green" checked={ node.color === 'green' ? true : false } onChange={ (color) => this.setColor(color, node.id) }>
                   Green
                 </Radio>
-                <Radio name="colorPickerEditor" inline value="initial" defaultChecked={ this.props.node.color === 'initial' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                <Radio name="colorPickerEditor" inline value="initial" checked={ node.color === 'initial' ? true : false } onChange={ (color) => this.setColor(color, node.id) }>
                   None
                 </Radio>
               </FormGroup>
@@ -331,28 +402,28 @@ class Editor extends Component {
 
             <Tab eventKey={6} title="Size">
               <FormGroup>
-                <Radio name="sizePicker" inline value="xs" defaultChecked={ this.props.node.size === 'xs' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                <Radio name="sizePicker" inline value="xs" checked={ node.size === 'xs' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
                   XS
                 </Radio>
                 {'  '}
-                <Radio name="sizePicker" inline value="s" defaultChecked={ this.props.node.size === 's' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                <Radio name="sizePicker" inline value="s" checked={ node.size === 's' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
                   S
                 </Radio>
                 {'  '}
-                <Radio name="sizePicker" inline value="m" defaultChecked={ this.props.node.size === 'm' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                <Radio name="sizePicker" inline value="m" checked={ node.size === 'm' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
                   M
                 </Radio>
-                <Radio name="sizePicker" inline value="l" defaultChecked={ this.props.node.size === 'l' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                <Radio name="sizePicker" inline value="l" checked={ node.size === 'l' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
                   L
                 </Radio>
-                <Radio name="sizePicker" inline value="xl" defaultChecked={ this.props.node.size === 'xl' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                <Radio name="sizePicker" inline value="xl" checked={ node.size === 'xl' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
                   XL
                 </Radio>
               </FormGroup>
             </Tab>
 
           </Tabs>
-          <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteNode(node) } >Delete</Button>
+          <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteNode(node) } >Delete Node</Button>
           <Button id="delete-button" onClick={ () => this.props.closeEditor(node) } >Close</Button>
         </Panel>
       )

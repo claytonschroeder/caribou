@@ -104,22 +104,22 @@ class Toolbox extends Component {
         <FormGroup>
           <p>Select the size of your node:</p>
           <div className='radio-button-container'>
-            <Radio name="sizePickerToolbox" inline value="xs" defaultChecked={ this.props.currentSize === 'xs' ? true : false } onClick={ this.setSize }>
+            <Radio name="sizePickerToolbox" inline value="xs" checked={ this.props.currentSize === 'xs' ? true : false } onChange={ this.setSize }>
               XS
             </Radio>
             {'  '}
-            <Radio name="sizePickerToolbox" inline value="s" defaultChecked={ this.props.currentSize === 's' ? true : false } onClick={ this.setSize }>
+            <Radio name="sizePickerToolbox" inline value="s" checked={ this.props.currentSize === 's' ? true : false } onChange={ this.setSize }>
               S
             </Radio>
             {'  '}
-            <Radio name="sizePickerToolbox" inline value="m" defaultChecked={ this.props.currentSize === 'm' ? true : false } onClick={ this.setSize }>
+            <Radio name="sizePickerToolbox" inline value="m" checked={ this.props.currentSize === 'm' ? true : false } onChange={ this.setSize }>
               M
             </Radio>
-            <Radio name="sizePickerToolbox" inline value="l" defaultChecked={ this.props.currentSize === 'l' ? true : false } onClick={ this.setSize }>
+            <Radio name="sizePickerToolbox" inline value="l" checked={ this.props.currentSize === 'l' ? true : false } onChange={ this.setSize }>
               L
             </Radio>
             {'  '}
-            <Radio name="sizePickerToolbox" inline value="xl" defaultChecked={ this.props.currentSize === 'xl' ? true : false } onClick={ this.setSize }>
+            <Radio name="sizePickerToolbox" inline value="xl" checked={ this.props.currentSize === 'xl' ? true : false } onChange={ this.setSize }>
               XL
             </Radio>
           </div>
@@ -151,18 +151,18 @@ class Toolbox extends Component {
               <p>Select which nodes you would like to display:</p>
               <FormGroup>
                 <div className='checkbox-button-container'>
-                  <Checkbox inline value='red' ref='red' defaultChecked={ this.props.redSelected ? true : false } onClick={ this.updateFilter }>
+                  <Checkbox inline value='red' ref='red' checked={ this.props.redSelected ? true : false } onChange={ this.updateFilter }>
                     Red
                   </Checkbox>
                   {'  '}
-                  <Checkbox inline value='blue' ref='blue' defaultChecked={ this.props.blueSelected ? true : false } onClick={ this.updateFilter }>
+                  <Checkbox inline value='blue' ref='blue' checked={ this.props.blueSelected ? true : false } onChange={ this.updateFilter }>
                     Blue
                   </Checkbox>
                   {'  '}
-                  <Checkbox inline value='green' ref='green' defaultChecked={ this.props.greenSelected ? true : false } onClick={ this.updateFilter }>
+                  <Checkbox inline value='green' ref='green' checked={ this.props.greenSelected ? true : false } onChange={ this.updateFilter }>
                     Green
                   </Checkbox>
-                  <Checkbox inline value='initial' ref='initial' defaultChecked={ this.props.initialSelected ? true : false } onClick={ this.updateFilter }>
+                  <Checkbox inline value='initial' ref='initial' checked={ this.props.initialSelected ? true : false } onChange={ this.updateFilter }>
                     None
                   </Checkbox>
                   {'  '}

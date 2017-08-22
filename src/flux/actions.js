@@ -217,7 +217,18 @@ export default function(store) {
       // update the node in the state array
       store.updateNode(node.id, node);
     },
-    uploadAttachment: (file, evidenceIndex, referenceIndex, id) => {
+    uploadAttachment: (file, evidenceIndex, referenceIndex, id, activeTab) => {
+      let location;
+
+      switch(activeTab){
+        case 2:
+          location = 'strongEvidence'
+        break;
+        case 3:
+          location = 'weakEvidence'
+        break;
+      }
+
       // find the index of the node we want to modify
       const index = store.getState().nodes.findIndex(node => node.id === id);
 
@@ -225,8 +236,55 @@ export default function(store) {
       const node = { ...store.getState().nodes[index] };
 
       // modify the specific item inside the node
-      node.notes.strongEvidence[evidenceIndex].references[referenceIndex].attachment = file.base64;
-      node.notes.strongEvidence[evidenceIndex].references[referenceIndex].fileName = file.name;
+      node.notes[location][evidenceIndex].references[referenceIndex].attachment = file.base64;
+      node.notes[location][evidenceIndex].references[referenceIndex].fileName = file.name;
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    },
+    removeAttachment: (evidenceIndex, referenceIndex, id, activeTab) => {
+      let location;
+
+      switch(activeTab){
+        case 2:
+          location = 'strongEvidence'
+        break;
+        case 3:
+          location = 'weakEvidence'
+        break;
+      }
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      // modify the specific item inside the node
+      node.notes[location][evidenceIndex].references[referenceIndex].attachment = null;
+      node.notes[location][evidenceIndex].references[referenceIndex].fileName = null;
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    },
+    removeLink: (evidenceIndex, referenceIndex, id, activeTab) => {
+      let location;
+
+      switch(activeTab){
+        case 2:
+          location = 'strongEvidence'
+        break;
+        case 3:
+          location = 'weakEvidence'
+        break;
+      }
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      // modify the specific item inside the node
+      node.notes[location][evidenceIndex].references[referenceIndex].link = null;
 
       // update the node in the state array
       store.updateNode(node.id, node);

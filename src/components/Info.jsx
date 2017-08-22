@@ -22,9 +22,9 @@ class Info extends Component {
     let nodeInfo;
 
     const node = this.props.node
-    const strongCount = node.notes.strongEvidence[0].detail ? node.notes.strongEvidence.length : 0;
-    const weakCount = node.notes.weakEvidence[0].detail ? node.notes.weakEvidence.length : 0
-    const uncertainCount = node.notes.uncertain[0].detail ? node.notes.uncertain.length : 0
+    const strongCount = node.notes.strongEvidence.length > 0 && node.notes.strongEvidence[0].detail ? node.notes.strongEvidence.length : 0;
+    const weakCount = node.notes.weakEvidence.length > 0 && node.notes.weakEvidence[0].detail ? node.notes.weakEvidence.length : 0
+    const uncertainCount = node.notes.uncertain.length > 0 && node.notes.uncertain[0].detail ? node.notes.uncertain.length : 0
 
     if(node){
       nodeInfo = (
@@ -86,10 +86,24 @@ class Info extends Component {
                         <ul>
                           {
                             evidence.references.map((reference, index) => {
-                              return (
-                                <li key={ index }>
-                                  <a href={ reference.link }>{ reference.link }</a>
+                              let referenceLink = reference.link ? (
+                                <li>
+                                  <a target="_blank" href={ reference.link ? reference.link : null }>{ reference.link ? reference.link : null }</a>
                                 </li>
+                              ) : null
+
+                              let referenceAttachment = reference.attachment ? (
+                                <li>
+                                  <a onClick={ () => this.openInNewWindow(reference.attachment ? reference.attachment : null) }>
+                                    { reference.fileName ? reference.fileName : null }
+                                  </a>
+                                </li>
+                              ) : null
+                              return (
+                                <div key={ index }>
+                                  { referenceLink }
+                                  { referenceAttachment }
+                                </div>
                               )
                             })
                           }

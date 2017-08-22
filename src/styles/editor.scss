@@ -1,0 +1,13 @@
+.attached-link {
+  display: flex;
+}
+.attached-file {
+  display: flex;
+  .attached-file-delete:hover {
+    cursor: pointer
+  }
+  .attached-file-name {
+    margin: 5px;
+    padding: 5px;
+  }
+}

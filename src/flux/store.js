@@ -12,28 +12,16 @@ const state = {
         summary: {
           id: 123411234,
           addedBy: 'Tim',
-          description: 'English Bay Beach, also called First Beach, located along Beach Ave between Gilford St and Bidwell St, is the most populated beach area in Vancouvers downtown area. The Stanley Park Seawall, a popular running and biking route, runs along the east side of the beach.',
+          description: 'Central Platte River flows are highly managed. Storeage resevoirs and irrigation infrastructure has effectively stabalized the hydrograph of the central Platte. Peak flow magnatudes have been reduced due to storage and summer low flows have been increased due to irrigation return flows',
           createdAt: '2017-08-03 19:58:16.145+00',
           updatedAt: '2017-08-03 19:58:16.145+00',
         },
         strongEvidence: [
           {
-            detail: 'On any given day, a dozen deep-sea freighters rest at anchor in English Bay, waiting to dock in Vancouver’s busy harbour.',
+            detail: 'There are approximately 7,000,000 acre-ft of storage in the North Platter River basin and 1,000,000 acre-ft of storage in the South Platte.',
             references: [
               {
                 id: 41234112,
-                link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
-                attachment: null,
-                fileName: null
-              },
-              {
-                id: 1234125132,
-                link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
-                attachment: null,
-                fileName: null
-              },
-              {
-                id: 1234125132,
                 link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
                 attachment: null,
                 fileName: null
@@ -41,7 +29,7 @@ const state = {
             ]
           },
           {
-            detail: 'If the Trans Mountain Pipeline proposal, now under review by a parliamentary panel, is approved, oil tanker traffic through the harbour will increase from about one a week, to one a day. (The exact figures are from five a month to 34 a month.)',
+            detail: 'Ittigation storage and operations have stabalized Central Platte River flows over time, reducing late-spring runoff magnitude and duration and increasing baseflows during the summer period.',
             references: [
               {
                 id: 1234121232344444,
@@ -52,41 +40,8 @@ const state = {
             ]
           }
         ],
-        weakEvidence: [
-          {
-            detail: '8,000 people walk or bike the Seawall on a typical summer day, with 14,000 more using the beaches, that proposed increase in tanker traffic has raised real fears because the additional ships will be filled with oil.',
-            references: [
-              {
-                id: 131234,
-                link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
-                attachment: null,
-                fileName: null
-              }
-            ]
-          },
-          {
-            detail: 'A proposal to add one more ship a day to that mix wouldn’t raise any concerns.',
-            references: [
-              {
-                id: 4992928,
-                link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
-                attachment: null,
-                fileName: null
-              }
-            ]
-          }
-        ],
-        uncertain: [
-          {
-            detail: 'B.C.’s coastal waters could soon be home to a growing number of oil tankers.'
-          },
-          {
-            detail: 'Enbridge Inc.’s proposed Northern Gateway project would create a comparably busy route, in a far more isolated region – shipping oil from Kitimat through the narrow, often rough waters of the Douglas Channel.'
-          },
-          {
-            detail: 'It’s true that a spill such as the Marathassa’s would not have much in common with that of a big, bitumen-bearing tanker.'
-          }
-        ]
+        weakEvidence: [],
+        uncertain: []
       }
     }
   ]

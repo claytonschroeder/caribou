@@ -13,7 +13,7 @@ class Legend extends Component {
           this.props.nodes.length > 0 ? this.props.nodes.map((node, index) => {
             return (
               <div key={ index } className='legend-item'>
-                <Checkbox inline defaultChecked={ !node.hidden } onClick={ () => this.props.hideNode(node.id) }>
+                <Checkbox inline checked={ !node.hidden } onChange={ () => this.props.hideNode(node.id) }>
                 </Checkbox>
                 <div className='legend-detail' onClick={ () => this.props.selectNode(node.id) }>
                   <div className='icon' style={{backgroundColor: node.color, borderRadius: '50%', height: '15px', width: '15px'}}>

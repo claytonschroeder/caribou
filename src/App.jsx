@@ -30,6 +30,7 @@ class App extends Component {
       addNodeEnabled: false,
       viewLegend: true,
       color: 'red',
+      size: 'm',
       redSelected: true,
       blueSelected: true,
       greenSelected: true,
@@ -52,6 +53,7 @@ class App extends Component {
     this.hideNode = this.hideNode.bind(this);
     this.closeEditor = this.closeEditor.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
+    this.selectSize = this.selectSize.bind(this);
   }
 
   /* If no image URL, you can upload a new image from your computer, called from Nodes component */
@@ -121,6 +123,13 @@ class App extends Component {
     })
   }
 
+  /* Select the size for any new nodes */
+  selectSize(size){
+    this.setState({
+      size: size
+    })
+  }
+
   /* Hide edit container and info container, this is called when a node is deleted in Editor */
   updateEditState(){
     this.setState({
@@ -146,14 +155,15 @@ class App extends Component {
   }
 
   /* Generate a new node on the image container */
-  newNode(x, y, color){
+  newNode(x, y, color, size){
     let random = Math.random()*1000000;
     let newId = Math.round(random);
     let blankTemplate = ObjectUtil.copy(newNodeTemplate);
     blankTemplate.id = newId;
-    blankTemplate.x = x - 15;
-    blankTemplate.y = y - 15;
+    blankTemplate.x = x;
+    blankTemplate.y = y;
     blankTemplate.color = color;
+    blankTemplate.size = size;
 
     this.actions.addNewNode(blankTemplate);
     this.setState({
@@ -240,6 +250,7 @@ class App extends Component {
             editNode = { this.state.editNode }
             newNode = { this.newNode }
             color = { this.state.color }
+            size = { this.state.size }
             redSelected = { this.state.redSelected }
             blueSelected = { this.state.blueSelected }
             greenSelected = { this.state.greenSelected }
@@ -260,6 +271,8 @@ class App extends Component {
               this.state.image ? (
                 <Col className='toolbox-container' xs={12} md={4}>
                   <Toolbox
+                    currentSize = { this.state.size }
+                    selectSize = { this.selectSize }
                     toggleViewLegend = { this.toggleViewLegend }
                     filterNodes = { this.filterNodes }
                     currentColor = { this.state.color }

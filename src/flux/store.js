@@ -6,6 +6,7 @@ const state = {
       y: 165,
       name: 'English Bay',
       color: 'red',
+      size: 'l',
       hidden: false,
       notes: {
         summary: {

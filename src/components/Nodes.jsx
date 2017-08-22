@@ -24,9 +24,10 @@ class Nodes extends Component {
 
   getLocation(clickEvent){
     let color = this.props.color ? this.props.color : 'red'
+    let size = this.props.size
     let x = clickEvent.nativeEvent.offsetX;
     let y = clickEvent.nativeEvent.offsetY;
-    this.props.newNode(x, y, color)
+    this.props.newNode(x, y, color, size)
   }
 
   selectNode(id){

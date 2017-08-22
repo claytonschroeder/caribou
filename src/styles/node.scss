@@ -1,7 +1,5 @@
 .single-node {
   position: absolute;
-  height: 40px;
-  width: 40px;
   border-radius: 50%;
   z-index: 999;
   transition: all .2s ease-in-out;
@@ -9,8 +7,6 @@
 
 .single-node-selected {
   position: absolute;
-  height: 40px;
-  width: 40px;
   border-radius: 50%;
   z-index: 999;
   transition: all .2s ease-in-out;

@@ -15,6 +15,7 @@ class Toolbox extends Component {
     this.onToggleLegend = this.onToggleLegend.bind(this);
     this.setColor = this.setColor.bind(this);
     this.updateFilter = this.updateFilter.bind(this);
+    this.setSize = this.setSize.bind(this);
   }
 
   onToggle() {
@@ -65,6 +66,10 @@ class Toolbox extends Component {
     this.props.selectColor(color.currentTarget.value)
   }
 
+  setSize(size){
+    this.props.selectSize(size.currentTarget.value)
+  }
+
   render() {
       const displayAlert = this.shouldDisplayAlert(this.props.currentColor)
       const alert = displayAlert ? (
@@ -95,6 +100,32 @@ class Toolbox extends Component {
           </div>
         </FormGroup>
       )
+      const sizePicker = (
+        <FormGroup>
+          <p>Select the size of your node:</p>
+          <div className='radio-button-container'>
+            <Radio name="sizePickerToolbox" inline value="xs" defaultChecked={ this.props.currentSize === 'xs' ? true : false } onClick={ this.setSize }>
+              XS
+            </Radio>
+            {'  '}
+            <Radio name="sizePickerToolbox" inline value="s" defaultChecked={ this.props.currentSize === 's' ? true : false } onClick={ this.setSize }>
+              S
+            </Radio>
+            {'  '}
+            <Radio name="sizePickerToolbox" inline value="m" defaultChecked={ this.props.currentSize === 'm' ? true : false } onClick={ this.setSize }>
+              M
+            </Radio>
+            <Radio name="sizePickerToolbox" inline value="l" defaultChecked={ this.props.currentSize === 'l' ? true : false } onClick={ this.setSize }>
+              L
+            </Radio>
+            {'  '}
+            <Radio name="sizePickerToolbox" inline value="xl" defaultChecked={ this.props.currentSize === 'xl' ? true : false } onClick={ this.setSize }>
+              XL
+            </Radio>
+          </div>
+        </FormGroup>
+      )
+
       const toolbox = (
         <Panel id="toolbox-panel" header="Toolbox">
           <Tabs defaultActiveKey={1} onSelect={ key => this.setState({activeTab: key}) } id="uncontrolled-tab-example">
@@ -109,6 +140,9 @@ class Toolbox extends Component {
                 active={ this.state.toggleActive } />
                 {
                   this.state.toggleActive ? colorPicker : null
+                }
+                {
+                  this.state.toggleActive ? sizePicker : null
                 }
             </Tab>
 

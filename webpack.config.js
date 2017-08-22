@@ -1,32 +1,45 @@
-var path = require('path');
-var webpack = require('webpack');
+require('dotenv').config();
+
+const path = require('path');
+const webpack = require('webpack');
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'source-map',
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
+    'es6-promise',
     './src/index.jsx'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/build/'
+    path: path.join(__dirname, 'build'),
+    filename: 'application.js',
+    publicPath: '/'
   },
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.jsx?$/,
-        loader: 'babel-loader',
+        loaders: ['babel-loader'],
         include: path.join(__dirname, 'src')
       },
       {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
+        test: [/\.scss$/, /\.css$/],
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Pallid Demo',
+      template: path.join(__dirname, 'assets/index.html')
+    }),
+    new CopyWebpackPlugin([
+      { from: 'assets/images', to: path.join(__dirname, 'build/images') }
+    ]),
+    new webpack.ProvidePlugin({
+      fetch: 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch'
+    })
+  ]
 };

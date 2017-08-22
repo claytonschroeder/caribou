@@ -11,6 +11,7 @@ import { Grid, Col, Row } from 'react-bootstrap';
 import store from './flux/store.js';
 import actions from './flux/actions.js';
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +19,7 @@ class App extends Component {
     this.store = store(this.updateNodes.bind(this));
 
     this.state = {
-      image: 'http://localhost:3000/build/images/PallidSturgeon.png',
+      image: 'http://localhost:8000/build/images/PallidSturgeon.png',
       selectedNode: null,
       editNode: null,
       shouldDisplayInfo: true,

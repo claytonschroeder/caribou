@@ -3,6 +3,8 @@ import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, HelpBlock, Button
 import Node from './Node.jsx'
 import Legend from './Legend.jsx'
 
+import FileBase64 from 'react-file-base64';
+
 class Nodes extends Component {
   constructor(props) {
     super(props);
@@ -54,7 +56,8 @@ class Nodes extends Component {
         selectNode = {this.selectNode}
         redSelected = { this.props.redSelected }
         blueSelected = { this.props.blueSelected }
-        greenSelected = { this.props.greenSelected } />
+        greenSelected = { this.props.greenSelected }
+        initialSelected = { this.props.initialSelected } />
 
     })
 
@@ -84,6 +87,10 @@ class Nodes extends Component {
                 placeholder="Enter URL"
                 onChange={ this.imageURL }
               />
+              <ControlLabel>OR upload an image from your computer:</ControlLabel>
+              <FileBase64
+                multiple={ false }
+                onDone={ this.props.uploadImage } />
               <FormControl.Feedback />
               <HelpBlock>The ideal image size is 1000 pixels x 500pixels. Larger images will require you to scroll, while smaller images will not take up the entire space.</HelpBlock>
               <Button id="load-image-button" bsStyle="success" onClick={ this.sendUrl } >Load Image</Button>

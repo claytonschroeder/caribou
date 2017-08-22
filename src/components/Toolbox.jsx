@@ -38,6 +38,9 @@ class Toolbox extends Component {
       case 'green':
         return !this.props.greenSelected ? true : false
       break;
+      case 'initial':
+        return !this.props.initialSelected ? true : false
+      break;
     }
   }
 
@@ -51,6 +54,9 @@ class Toolbox extends Component {
       break;
       case 'green':
         this.props.filterNodes('green')
+      break;
+      case 'initial':
+        this.props.filterNodes('initial')
       break;
     }
   }
@@ -81,6 +87,10 @@ class Toolbox extends Component {
             <Radio name="colorPickerToolbox" inline value="green" defaultChecked={ this.props.currentColor === 'green' ? true : false } onClick={ this.setColor }>
               Green
             </Radio>
+            <Radio name="colorPickerToolbox" inline value="initial" defaultChecked={ this.props.currentColor === 'initial' ? true : false } onClick={ this.setColor }>
+              None
+            </Radio>
+            {'  '}
             { alert }
           </div>
         </FormGroup>
@@ -118,6 +128,10 @@ class Toolbox extends Component {
                   <Checkbox inline value='green' ref='green' defaultChecked={ this.props.greenSelected ? true : false } onClick={ this.updateFilter }>
                     Green
                   </Checkbox>
+                  <Checkbox inline value='initial' ref='initial' defaultChecked={ this.props.initialSelected ? true : false } onClick={ this.updateFilter }>
+                    None
+                  </Checkbox>
+                  {'  '}
                 </div>
               </FormGroup>
               <p>View Legend: </p>

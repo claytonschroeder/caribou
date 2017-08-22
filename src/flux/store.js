@@ -22,14 +22,20 @@ const state = {
               {
                 id: 41234112,
                 link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
+                attachment: null,
+                fileName: null
               },
               {
                 id: 1234125132,
                 link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
+                attachment: null,
+                fileName: null
               },
               {
                 id: 1234125132,
                 link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
+                attachment: null,
+                fileName: null
               }
             ]
           },
@@ -39,6 +45,8 @@ const state = {
               {
                 id: 1234121232344444,
                 link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
+                attachment: null,
+                fileName: null
               }
             ]
           }
@@ -50,6 +58,8 @@ const state = {
               {
                 id: 131234,
                 link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
+                attachment: null,
+                fileName: null
               }
             ]
           },
@@ -59,6 +69,8 @@ const state = {
               {
                 id: 4992928,
                 link: 'https://www.theglobeandmail.com/news/british-columbia/vancouver-divided-on-risks-of-oil-tankers',
+                attachment: null,
+                fileName: null
               }
             ]
           }

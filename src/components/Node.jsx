@@ -16,6 +16,9 @@ class Node extends Component {
       case 'green':
         return this.props.greenSelected ? 'block' : 'none'
       break;
+      case 'initial':
+        return this.props.initialSelected ? 'block' : 'none'
+      break;
     }
   }
 

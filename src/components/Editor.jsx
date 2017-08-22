@@ -2,11 +2,16 @@ import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
 import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio } from 'react-bootstrap';
 
+import FileBase64 from 'react-file-base64';
+
 class Editor extends Component {
   constructor(props) {
     super(props)
     this.state = {
       activeTab: 1,
+      evidenceIndex: null,
+      referenceIndex: null,
+      currentId: null
     }
     this.saveChanges = this.saveChanges.bind(this);
     this.updateName = this.updateName.bind(this);
@@ -14,6 +19,20 @@ class Editor extends Component {
     this.addNew = this.addNew.bind(this);
     this.setColor = this.setColor.bind(this);
     this.addNewReference = this.addNewReference.bind(this);
+    this.uploadAttachment = this.uploadAttachment.bind(this);
+    this.getLocation = this.getLocation.bind(this);
+  }
+
+  uploadAttachment(file){
+    this.props.uploadAttachment(file, this.state.evidenceIndex, this.state.referenceIndex, this.state.currentId)
+  }
+
+  getLocation(i, index, id){
+    this.setState({
+      evidenceIndex: i,
+      referenceIndex: index,
+      currentId: id
+    })
   }
 
   setColor(color, id){
@@ -197,17 +216,18 @@ class Editor extends Component {
                           evidence.references.map((reference, index) => {
                             return (
                               <form key={ index }>
-                                <FormGroup controlId="strongEvidenceReferenceText">
+                                <FormGroup
+                                  controlId="strongEvidenceReferenceText"
+                                  onClick={ () => this.getLocation(i, index, node.id) }>
                                   <FormControl
                                     type="text"
                                     placeholder="Enter your reference link"
                                     ref={ `strong-link-${i}-${index}` }
                                     onChange= { () => this.saveChanges(node) }
-                                    defaultValue={ reference.link ? reference.link : '' } />
-                                    <FormControl
-                                      type="file"
-                                      label="File"
-                                    />
+                                    defaultValue={ reference.link ? reference.link : null } />
+                                    <FileBase64
+                                      multiple={ false }
+                                      onDone={ this.uploadAttachment } />
                                 </FormGroup>
                               </form>
                             )

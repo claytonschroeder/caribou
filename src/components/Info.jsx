@@ -1,14 +1,20 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 class Info extends Component {
   constructor(props) {
     super(props)
     this.editButton = this.editButton.bind(this);
+    this.openInNewWindow = this.openInNewWindow.bind(this);
   }
 
   editButton(id){
     this.props.editNode(id)
+  }
+
+  openInNewWindow(file){
+    let win = window.open();
+    win.document.write('<iframe src="' + file + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>')
   }
 
   render() {
@@ -39,10 +45,24 @@ class Info extends Component {
                         <ul>
                           {
                             evidence.references.map((reference, index) => {
-                              return (
-                                <li key={ index }>
-                                  <a href={ reference.link }>{ reference.link }</a>
+                              let referenceLink = reference.link ? (
+                                <li>
+                                  <a target="_blank" href={ reference.link ? reference.link : null }>{ reference.link ? reference.link : null }</a>
                                 </li>
+                              ) : null
+
+                              let referenceAttachment = reference.attachment ? (
+                                <li>
+                                  <a onClick={ () => this.openInNewWindow(reference.attachment ? reference.attachment : null) }>
+                                    { reference.fileName ? reference.fileName : null }
+                                  </a>
+                                </li>
+                              ) : null
+                              return (
+                                <div key={ index }>
+                                  { referenceLink }
+                                  { referenceAttachment }
+                                </div>
                               )
                             })
                           }

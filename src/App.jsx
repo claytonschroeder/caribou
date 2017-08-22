@@ -18,7 +18,7 @@ class App extends Component {
     this.store = store(this.updateNodes.bind(this));
 
     this.state = {
-      image: 'http://localhost:3000/build/images/FraserValley.png',
+      image: 'http://localhost:3000/build/images/PallidSturgeon.png',
       selectedNode: null,
       editNode: null,
       shouldDisplayInfo: true,
@@ -29,6 +29,7 @@ class App extends Component {
       redSelected: true,
       blueSelected: true,
       greenSelected: true,
+      initialSelected: true,
       nodes: this.store.getState().nodes
     }
 
@@ -46,6 +47,11 @@ class App extends Component {
     this.toggleViewLegend = this.toggleViewLegend.bind(this);
     this.hideNode = this.hideNode.bind(this);
     this.closeEditor = this.closeEditor.bind(this);
+    this.uploadImage = this.uploadImage.bind(this);
+  }
+
+  uploadImage(file){
+    this.setState({ image: file.base64 })
   }
 
   closeEditor(node){
@@ -69,7 +75,6 @@ class App extends Component {
   }
 
   updateImageURL(url){
-    console.log(url)
     this.setState({
       image: url
     })
@@ -90,6 +95,11 @@ class App extends Component {
       case 'green':
         this.setState({
           greenSelected: !this.state.greenSelected
+        })
+      break;
+      case 'initial':
+        this.setState({
+          initialSelected: !this.state.initialSelected
         })
       break;
     }
@@ -191,6 +201,7 @@ class App extends Component {
         </Grid>
         <Grid>
           <Nodes
+            uploadImage = { this.uploadImage }
             hideNode = { this.hideNode }
             viewLegend = { this.state.viewLegend }
             updateImageURL = { this.updateImageURL }
@@ -203,7 +214,8 @@ class App extends Component {
             color = { this.state.color }
             redSelected = { this.state.redSelected }
             blueSelected = { this.state.blueSelected }
-            greenSelected = { this.state.greenSelected } />
+            greenSelected = { this.state.greenSelected }
+            initialSelected = { this.state.initialSelected } />
           <Row>
             <Col className='info-container' xs={12} md={8} style={{display: this.state.shouldDisplayInfo ? 'block' : 'none'}}>
               { nodeInfo }
@@ -227,7 +239,8 @@ class App extends Component {
                     toggleAddNode = { this.toggleAddNode }
                     redSelected = { this.state.redSelected }
                     blueSelected = { this.state.blueSelected }
-                    greenSelected = { this.state.greenSelected }/>
+                    greenSelected = { this.state.greenSelected }
+                    initialSelected = { this.state.initialSelected } />
                 </Col>
               ) : null
             }

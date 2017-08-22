@@ -2,10 +2,10 @@ const state = {
   nodes: [
     {
       id: 12341412341,
-      x: 173,
-      y: 165,
+      x: 188,
+      y: 180,
       name: 'English Bay',
-      color: 'red',
+      color: 'initial',
       size: 'l',
       hidden: false,
       notes: {

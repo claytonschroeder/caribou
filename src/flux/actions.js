@@ -160,6 +160,19 @@ export default function(store) {
       // update the node in the state array
       store.updateNode(node.id, node);
     },
+    changeSize: (id, size) => {
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      // change the size of the node
+      node.size = size;
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    },
     hideNode: (id) => {
       // find the index of the node we want to modify
       const index = store.getState().nodes.findIndex(node => node.id === id);

@@ -18,6 +18,7 @@ class Editor extends Component {
     this.deleteNode = this.deleteNode.bind(this);
     this.addNew = this.addNew.bind(this);
     this.setColor = this.setColor.bind(this);
+    this.setSize = this.setSize.bind(this);
     this.addNewReference = this.addNewReference.bind(this);
     this.uploadAttachment = this.uploadAttachment.bind(this);
     this.getLocation = this.getLocation.bind(this);
@@ -37,6 +38,10 @@ class Editor extends Component {
 
   setColor(color, id){
     this.props.changeColor(id, color.currentTarget.value)
+  }
+
+  setSize(size, id){
+    this.props.changeSize(id, size.currentTarget.value)
   }
 
   addNew(node){
@@ -317,6 +322,31 @@ class Editor extends Component {
                 {'  '}
                 <Radio name="colorPickerEditor" inline value="green" defaultChecked={ this.props.node.color === 'green' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
                   Green
+                </Radio>
+                <Radio name="colorPickerEditor" inline value="initial" defaultChecked={ this.props.node.color === 'initial' ? true : false } onClick={ (color) => this.setColor(color, node.id) }>
+                  None
+                </Radio>
+              </FormGroup>
+            </Tab>
+
+            <Tab eventKey={6} title="Size">
+              <FormGroup>
+                <Radio name="sizePicker" inline value="xs" defaultChecked={ this.props.node.size === 'xs' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                  XS
+                </Radio>
+                {'  '}
+                <Radio name="sizePicker" inline value="s" defaultChecked={ this.props.node.size === 's' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                  S
+                </Radio>
+                {'  '}
+                <Radio name="sizePicker" inline value="m" defaultChecked={ this.props.node.size === 'm' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                  M
+                </Radio>
+                <Radio name="sizePicker" inline value="l" defaultChecked={ this.props.node.size === 'l' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                  L
+                </Radio>
+                <Radio name="sizePicker" inline value="xl" defaultChecked={ this.props.node.size === 'xl' ? true : false } onClick={ (size) => this.setSize(size, node.id) }>
+                  XL
                 </Radio>
               </FormGroup>
             </Tab>

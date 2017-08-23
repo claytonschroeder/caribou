@@ -7,7 +7,8 @@
     "start": "npm run dev:build:webpack && node server/server.js",
     "webpack": "node server.js",
     "server": "node server/server.js",
-    "build": "node_modules/.bin/webpack --config webpack.config.js"
+    "build": "node_modules/.bin/webpack --config webpack.config.js",
+    "knex": "./node_modules/.bin/knex"
   },
   "repository": {
     "type": "git",
@@ -52,12 +53,17 @@
     "copy-webpack-plugin": "^4.0.1",
     "dotenv": "^4.0.0",
     "es6-promise": "^4.1.1",
+    "exports-loader": "^0.6.4",
     "express": "^4.15.4",
     "html-webpack-plugin": "^2.30.1",
+    "imports-loader": "^0.7.1",
+    "knex": "^0.13.0",
+    "pg": "^7.2.0",
     "react": "15.4.2",
     "react-bootstrap": "^0.31.2",
     "react-bootstrap-toggle": "^2.0.8",
     "react-dom": "15.4.2",
-    "react-file-base64": "^1.0.3"
+    "react-file-base64": "^1.0.3",
+    "react-loading": "^0.1.4"
   }
 }

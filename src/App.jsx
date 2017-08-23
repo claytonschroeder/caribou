@@ -7,9 +7,12 @@ import Toolbox from './components/Toolbox.jsx'
 import Header from './components/Header.jsx'
 
 import { Grid, Col, Row } from 'react-bootstrap';
+import ReactLoading from 'react-loading';
 
 import newNodeTemplate from './lib/nodeTemplate.json'
 const ObjectUtil = require('./utilities/objectCopy.js');
+
+import Api from './lib/api.js';
 
 import store from './flux/store.js';
 import actions from './flux/actions.js';
@@ -22,7 +25,8 @@ class App extends Component {
     this.store = store(this.updateNodes.bind(this));
 
     this.state = {
-      image: 'http://localhost:8000/build/images/PallidSturgeon.png',
+      loading: true,
+      image: null,
       selectedNode: null,
       editNode: null,
       shouldDisplayInfo: true,
@@ -56,6 +60,15 @@ class App extends Component {
     this.selectSize = this.selectSize.bind(this);
   }
 
+  componentDidMount(){
+    Api.json('/projects').then(response => {
+      this.setState({
+        loading: false,
+        image: response.image,
+      }, this.store.updateState(response.nodes))
+    })
+  }
+
   /* If no image URL, you can upload a new image from your computer, called from Nodes component */
   uploadImage(file){
     this.setState({ image: file.base64 })
@@ -71,10 +84,13 @@ class App extends Component {
     })
   }
 
-  /* triggered by actions. anytime we edit, add or delete nodes this is called and updates the state of the node array */
+  /* triggered by actions. anytime we edit, add or delete nodes this is called and updates the state of the node array. We also send the latest node array to our api to update the database to keep everything in sync. */
   updateNodes() {
-    this.setState({
-      nodes: this.store.getState().nodes
+    const nodes = this.store.getState().nodes
+    Api.post('/projects/update', nodes).then(response => {
+      this.setState({
+        nodes: nodes
+      })
     })
   }
 
@@ -213,6 +229,18 @@ class App extends Component {
   }
 
   render() {
+    if(this.state.loading){
+      return(
+        <Col className='loading-container' xs={12} md={12}>
+          <ReactLoading
+            type="bars"
+            color="#337ab7"
+            height="200px"
+            width="200px" />
+        </Col>
+      )
+    }
+
     let nodeInfo, nodeEdit;
     nodeInfo = this.state.selectedNode ?  (
       <Info

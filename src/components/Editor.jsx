@@ -42,8 +42,11 @@ class Editor extends Component {
     this.props.removeAttachment(i, index, id, this.state.activeTab)
   }
 
-  removeLink(i, index, id){
-    this.props.removeLink(i, index, id, this.state.activeTab)
+  removeLink(i, index, id, ref){
+    this.props.removeLink(i, index, id, this.state.activeTab);
+    if(ref){
+      this.setState({[ref]: ""})
+    }
   }
 
   setColor(color, id){
@@ -79,16 +82,16 @@ class Editor extends Component {
     }
   }
 
-  saveChanges(node){
+  saveChanges(node, ref){
     switch(this.state.activeTab){
       case 1:
         this.saveSummaryChanges(node)
       break;
       case 2:
-        this.saveStrongEvidence(node)
+        this.saveStrongEvidence(node, ref ? ref : null)
       break;
       case 3:
-        this.saveWeakEvidence(node)
+        this.saveWeakEvidence(node, ref ? ref : null)
       break;
       case 4:
         this.saveUncertain(node)
@@ -109,7 +112,7 @@ class Editor extends Component {
     this.props.updateSummary(node.id, { description: findDOMNode(this.refs.summary).value });
   }
 
-  saveStrongEvidence(node) {
+  saveStrongEvidence(node, ref) {
     const evidence = [];
 
     const evidenceLength = node.notes.strongEvidence.length
@@ -125,7 +128,7 @@ class Editor extends Component {
       copyNode.notes.strongEvidence[evIndex].detail = findDOMNode(this.refs[detailRef]).value
       for(let refIndex = 0; refIndex < referencesLength; refIndex++){
         let linkRef = `strong-link-${evIndex}-${refIndex}`
-        copyNode.notes.strongEvidence[evIndex].references[refIndex].link = findDOMNode(this.refs[linkRef]).value
+        copyNode.notes.strongEvidence[evIndex].references[refIndex].link = ref === linkRef ? this.state[ref] : findDOMNode(this.refs[linkRef]).value
         referenceArray.push(copyNode.notes.strongEvidence[evIndex].references[refIndex])
       }
       evidence.push(copyNode.notes.strongEvidence[evIndex])
@@ -134,7 +137,7 @@ class Editor extends Component {
     this.props.updateStrongEvidence(copyNode.id, evidence);
   }
 
-  saveWeakEvidence(node) {
+  saveWeakEvidence(node, ref) {
     const evidence = [];
 
     const evidenceLength = node.notes.weakEvidence.length
@@ -150,7 +153,7 @@ class Editor extends Component {
       copyNode.notes.weakEvidence[evIndex].detail = findDOMNode(this.refs[detailRef]).value
       for(let refIndex = 0; refIndex < referencesLength; refIndex++){
         let linkRef = `weak-link-${evIndex}-${refIndex}`
-        copyNode.notes.weakEvidence[evIndex].references[refIndex].link = findDOMNode(this.refs[linkRef]).value
+        copyNode.notes.weakEvidence[evIndex].references[refIndex].link = ref === linkRef ? this.state[ref] : findDOMNode(this.refs[linkRef]).value
         referenceArray.push(copyNode.notes.weakEvidence[evIndex].references[refIndex])
       }
       evidence.push(copyNode.notes.weakEvidence[evIndex])
@@ -237,31 +240,35 @@ class Editor extends Component {
                                 <FormGroup
                                   controlId="strongEvidenceReferenceText"
                                   onClick={ () => this.getLocation(i, index, node.id) }>
-                                  <div className='attached-link'>
-                                    <Button onClick={ () => this.removeLink(i, index, node.id) }bsStyle="danger">Remove Link</Button>
-                                    {
-                                      reference.link ? (
+                                  {
+                                    reference.link ? (
+                                      <div className='attached-link'>
                                         <FormControl
                                           type="text"
                                           placeholder="Enter your reference link"
                                           ref={ `strong-link-${i}-${index}` }
                                           onChange= { () => this.saveChanges(node) }
-                                          defaultValue={ reference.link } />
-                                      ) : (
+                                          value={ reference.link } />
+                                        <Button onClick={ () => this.removeLink(i, index, node.id, `strong-link-${i}-${index}`) }bsStyle="danger">Remove Link</Button>
+                                      </div>
+                                    ) : (
+                                      <div className='attached-link'>
                                         <FormControl
                                           type="text"
                                           placeholder="Enter your reference link"
                                           ref={ `strong-link-${i}-${index}` }
-                                          onChange= { () => this.saveChanges(node) }
-                                          defaultValue={ '' } />
-                                      )
-                                    }
-                                  </div>
+                                          onChange={ (event) => this.setState({[`strong-link-${i}-${index}`]: event.currentTarget.value}) }
+                                          value={ this.state[`strong-link-${i}-${index}`] ? this.state[`strong-link-${i}-${index}`] : '' } />
+                                        <Button onClick={ () => this.saveChanges(node, `strong-link-${i}-${index}`) }bsStyle="success">Save Link</Button>
+                                      </div>
+                                    )
+                                  }
+
                                   {
                                     reference.attachment ? (
                                       <div className='attached-file'>
+                                        <div disabled className='attached-file-name form-control'> { reference.fileName } </div>
                                         <Button onClick={ () => this.removeAttachment(i, index, node.id) }bsStyle="danger">Remove Attachment</Button>
-                                        <span className='attached-file-name'> { reference.fileName } </span>
                                       </div>
                                     ) : (
                                       <FileBase64
@@ -280,12 +287,7 @@ class Editor extends Component {
                   )
                 })
               }
-            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New Evidence</Button>
             </Tab>
-
-
-
-
 
 
             <Tab eventKey={3} title="Weak/Conflicting Evidence">
@@ -311,31 +313,35 @@ class Editor extends Component {
                                 <FormGroup
                                   controlId="weakEvidenceReferenceText"
                                   onClick={ () => this.getLocation(i, index, node.id) }>
-                                  <div className='attached-link'>
-                                    <Button onClick={ () => this.removeLink(i, index, node.id) }bsStyle="danger">Remove Link</Button>
-                                    {
-                                      reference.link ? (
+                                  {
+                                    reference.link ? (
+                                      <div className='attached-link'>
                                         <FormControl
                                           type="text"
                                           placeholder="Enter your reference link"
                                           ref={ `weak-link-${i}-${index}` }
                                           onChange= { () => this.saveChanges(node) }
-                                          defaultValue={ reference.link } />
-                                      ) : (
+                                          value={ reference.link } />
+                                        <Button onClick={ () => this.removeLink(i, index, node.id, `weak-link-${i}-${index}`) }bsStyle="danger">Remove Link</Button>
+                                      </div>
+                                    ) : (
+                                      <div className='attached-link'>
                                         <FormControl
                                           type="text"
                                           placeholder="Enter your reference link"
                                           ref={ `weak-link-${i}-${index}` }
-                                          onChange= { () => this.saveChanges(node) }
-                                          defaultValue={ '' } />
-                                      )
-                                    }
-                                  </div>
+                                          onChange={ (event) => this.setState({[`weak-link-${i}-${index}`]: event.currentTarget.value}) }
+                                          value={ this.state[`weak-link-${i}-${index}`] ? this.state[`weak-link-${i}-${index}`] : '' } />
+                                        <Button onClick={ () => this.saveChanges(node, `weak-link-${i}-${index}`) }bsStyle="success">Save Link</Button>
+                                      </div>
+                                    )
+                                  }
+
                                   {
                                     reference.attachment ? (
                                       <div className='attached-file'>
+                                        <div disabled className='attached-file-name form-control'> { reference.fileName } </div>
                                         <Button onClick={ () => this.removeAttachment(i, index, node.id) }bsStyle="danger">Remove Attachement</Button>
-                                        <span className='attached-file-name'> { reference.fileName } </span>
                                       </div>
                                     ) : (
                                       <FileBase64
@@ -354,7 +360,6 @@ class Editor extends Component {
                   )
                 })
               }
-            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New Evidence</Button>
             </Tab>
 
 
@@ -378,7 +383,6 @@ class Editor extends Component {
                   )
                 })
               }
-            <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add Evidence</Button>
             </Tab>
 
             <Tab eventKey={5} title="Color">
@@ -423,6 +427,13 @@ class Editor extends Component {
             </Tab>
 
           </Tabs>
+          {
+            this.state.activeTab === 2 || this.state.activeTab === 3 || this.state.activeTab === 4 ? (
+              <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New Evidence</Button>
+            ) : (
+              null
+            )
+          }
           <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteNode(node) } >Delete Node</Button>
           <Button id="delete-button" onClick={ () => this.props.closeEditor(node) } >Close</Button>
         </Panel>

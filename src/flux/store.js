@@ -4,7 +4,7 @@ const state = {
       id: 12341412341,
       x: 188,
       y: 180,
-      name: 'English Bay',
+      name: 'Node 1',
       color: 'initial',
       size: 'l',
       hidden: false,

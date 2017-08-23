@@ -94,7 +94,9 @@ export default function(store) {
         "references": [
           {
             "id": null,
-            "link": null
+            "link": null,
+            "attachment": null,
+            "fileName": null
           }
         ]
       }
@@ -116,7 +118,9 @@ export default function(store) {
         "references": [
           {
             "id": null,
-            "link": null
+            "link": null,
+            "attachment": null,
+            "fileName": null
           }
         ]
       }

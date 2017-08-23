@@ -5,6 +5,7 @@ import Legend from './Legend.jsx'
 
 import FileBase64 from 'react-file-base64';
 
+
 class Nodes extends Component {
   constructor(props) {
     super(props);
@@ -49,7 +50,7 @@ class Nodes extends Component {
       width: '100%'
     }
 
-    const nodes = this.props.nodes.map((node) => {
+    const nodes = this.props.nodes ? this.props.nodes.map((node) => {
       return <Node
         selectedNode = { this.props.selectedNode }
         editNode = { this.props.editNode }
@@ -61,7 +62,7 @@ class Nodes extends Component {
         greenSelected = { this.props.greenSelected }
         initialSelected = { this.props.initialSelected } />
 
-    })
+    }) : null
 
     const content = this.props.image ? (
       <Col className='image-container' xs={12} md={12}>
@@ -101,6 +102,31 @@ class Nodes extends Component {
         </div>
       </Col>
     )
+
+    const loading = this.props.loading ? (
+      <Col className='add-image' xs={12} md={12}>
+        <div className='add-image-form'>
+          <form>
+            <FormGroup controlId="addImage">
+              <ControlLabel>Copy and paste your image URL:</ControlLabel>
+              <FormControl
+                type="text"
+                value={ this.props.imageURL }
+                placeholder="Enter URL"
+                onChange={ this.imageURL }
+              />
+              <ControlLabel>OR upload an image from your computer:</ControlLabel>
+              <FileBase64
+                multiple={ false }
+                onDone={ this.props.uploadImage } />
+              <FormControl.Feedback />
+              <HelpBlock>The ideal image size is 1000 pixels x 500pixels. Larger images will require you to scroll, while smaller images will not take up the entire space.</HelpBlock>
+              <Button id="load-image-button" bsStyle="success" onClick={ this.sendUrl } >Load Image</Button>
+            </FormGroup>
+          </form>
+        </div>
+      </Col>
+    ) : null
     return (
         <Row className="show-grid">
           { content }

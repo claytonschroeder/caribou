@@ -16,7 +16,7 @@ class Legend extends Component {
                 <Checkbox inline checked={ !node.hidden } onChange={ () => this.props.hideNode(node.id) }>
                 </Checkbox>
                 <div className='legend-detail' onClick={ () => this.props.selectNode(node.id) }>
-                  <div className='icon' style={{backgroundColor: node.color, borderRadius: '50%', height: '15px', width: '15px'}}>
+                  <div className='icon' style={{backgroundColor: node.color, borderRadius: '50%', height: '15px', width: '15px', border: node.color === 'initial' ? '1px solid #ddd' : 'none'}}>
                   </div>
                   <span>
                     { node.name ? node.name : 'No Name' }

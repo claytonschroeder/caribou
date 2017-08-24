@@ -369,10 +369,11 @@ class Editor extends Component {
                 node.notes.uncertain.map((evidence, i) => {
                   return (
                     <Uncertain
-                     i={ i }
-                     node={ node }
-                     evidence={ evidence }
-                     saveUncertain={ this.saveUncertain }/>
+                      key={ i }
+                      i={ i }
+                      node={ node }
+                      evidence={ evidence }
+                      saveUncertain={ this.saveUncertain }/>
                   )
                 })
               }

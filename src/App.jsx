@@ -88,9 +88,34 @@ class App extends Component {
   updateNodes() {
     const nodes = this.store.getState().nodes
     Api.post('/projects/update', nodes).then(response => {
-      this.setState({
-        nodes: nodes
-      })
+      /* check to see if there is currently a node in edit mode. if there is we need to update it */
+      if(this.state.editNode){
+        const index = nodes.findIndex(node => node.id === this.state.editNode.id);
+        const editNode = nodes[index];
+        this.setState({
+          nodes: nodes,
+          editNode: editNode
+        })
+      } else {
+        this.setState({
+          nodes: nodes,
+        })
+      }
+
+
+      /* check to see if there is currently a node in selected mode. if there is we need to update it */
+      if(this.state.selectedNode){
+        const index = nodes.findIndex(node => node.id === this.state.selectedNode.id);
+        const selectedNode = nodes[index];
+        this.setState({
+          nodes: nodes,
+          selectedNode: selectedNode
+        })
+      } else {
+        this.setState({
+          nodes: nodes,
+        })
+      }
     })
   }
 

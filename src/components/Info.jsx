@@ -21,10 +21,20 @@ class Info extends Component {
 
     let nodeInfo;
 
+    function getLength(array){
+      let counter = 0;
+      array.map(each => {
+        if(each.detail){
+          counter = counter + 1
+        }
+      })
+      return counter;
+    }
+
     const node = this.props.node
-    const strongCount = node.notes.strongEvidence.length > 0 && node.notes.strongEvidence[0].detail ? node.notes.strongEvidence.length : 0;
-    const weakCount = node.notes.weakEvidence.length > 0 && node.notes.weakEvidence[0].detail ? node.notes.weakEvidence.length : 0
-    const uncertainCount = node.notes.uncertain.length > 0 && node.notes.uncertain[0].detail ? node.notes.uncertain.length : 0
+    const strongCount = getLength(node.notes.strongEvidence);
+    const weakCount = getLength(node.notes.weakEvidence);
+    const uncertainCount = getLength(node.notes.uncertain);
 
     if(node){
       nodeInfo = (

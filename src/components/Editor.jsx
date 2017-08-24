@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
 import { Panel, Button, Tabs, Tab, FormGroup, ControlLabel, FormControl, Radio, FieldGroup } from 'react-bootstrap';
 
+import Summary from './editorComponents/Summary.jsx'
+import Uncertain from './editorComponents/Uncertain.jsx'
+import Size from './editorComponents/Size.jsx'
+import Color from './editorComponents/Color.jsx'
+
 import FileBase64 from 'react-file-base64';
 
 class Editor extends Component {
@@ -24,6 +29,8 @@ class Editor extends Component {
     this.getLocation = this.getLocation.bind(this);
     this.removeAttachment = this.removeAttachment.bind(this);
     this.removeLink = this.removeLink.bind(this);
+    this.saveSummaryChanges = this.saveSummaryChanges.bind(this);
+    this.saveUncertain = this.saveUncertain.bind(this);
   }
 
   uploadAttachment(file){
@@ -108,8 +115,8 @@ class Editor extends Component {
     this.props.updateName(node.id, { name: findDOMNode(this.refs.name).value });
   }
 
-  saveSummaryChanges(node) {
-    this.props.updateSummary(node.id, { description: findDOMNode(this.refs.summary).value });
+  saveSummaryChanges(id, description) {
+    this.props.updateSummary(id, { description: description });
   }
 
   saveStrongEvidence(node, ref) {
@@ -162,19 +169,9 @@ class Editor extends Component {
     this.props.updateWeakEvidence(copyNode.id, evidence);
   }
 
-  saveUncertain(node) {
-    const evidence = [];
-
-    const evidenceLength = node.notes.uncertain.length
-
-    let copyNode = node;
-
-    for(let unIndex = 0; unIndex < evidenceLength; unIndex++){
-      let uncertainRef = `uncertain-${unIndex}`
-      copyNode.notes.uncertain[unIndex].detail = findDOMNode(this.refs[uncertainRef]).value
-      evidence.push(copyNode.notes.uncertain[unIndex])
-    }
-    this.props.updateUncertainEvidence(copyNode.id, evidence);
+  saveUncertain(node, content, i) {
+    node.notes.uncertain[i].detail = content
+    this.props.updateUncertainEvidence(node.id, node.notes.uncertain);
   }
 
 
@@ -201,22 +198,19 @@ class Editor extends Component {
 
 
 
-
+            {
+              /* view in editorComponents/Summary.jsx */
+            }
             <Tab eventKey={1} title="Summary">
-              <form>
-                <FormControl
-                  componentClass="textarea"
-                  placeholder="Enter a summary"
-                  ref="summary"
-                  onChange= { () => this.saveChanges(node) }
-                  defaultValue={ node.notes.summary.description ? node.notes.summary.description : '' } />
-              </form>
+              <Summary
+                node={ node }
+                saveSummaryChanges={ this.saveSummaryChanges } />
             </Tab>
 
 
-
-
-
+            {
+              /* Move to own component */
+            }
             <Tab eventKey={2} title="Strong Evidence">
               {
                 node.notes.strongEvidence.map((evidence, i) => {
@@ -289,7 +283,9 @@ class Editor extends Component {
               }
             </Tab>
 
-
+            {
+              /* Move to own component */
+            }
             <Tab eventKey={3} title="Weak/Conflicting Evidence">
               {
                 node.notes.weakEvidence.map((evidence, i) => {
@@ -365,65 +361,39 @@ class Editor extends Component {
 
 
 
-
+            {
+              /* View Uncertain component in ./editorComponents/Uncertain.jsx */
+            }
             <Tab eventKey={4} title="Uncertain">
               {
                 node.notes.uncertain.map((evidence, i) => {
                   return (
-                    <form key={ i }>
-                      <FormGroup controlId="strongEvidenceTextarea">
-                        <FormControl
-                          componentClass="textarea"
-                          placeholder="Enter your evidence"
-                          ref={ `uncertain-${i}` }
-                          onChange= { () => this.saveChanges(node) }
-                          defaultValue={ evidence.detail ? evidence.detail : '' } />
-                      </FormGroup>
-                    </form>
+                    <Uncertain
+                     i={ i }
+                     node={ node }
+                     evidence={ evidence }
+                     saveUncertain={ this.saveUncertain }/>
                   )
                 })
               }
             </Tab>
 
+            {
+              /* View Color component in ./editorComponents/Color.jsx */
+            }
             <Tab eventKey={5} title="Color">
-              <FormGroup>
-                <Radio name="colorPickerEditor" inline value="red" checked={ node.color === 'red' ? true : false } onChange={ (color) => this.setColor(color, node.id) }>
-                  Red
-                </Radio>
-                {'  '}
-                <Radio name="colorPickerEditor" inline value="blue" checked={ node.color === 'blue' ? true : false } onChange={ (color) => this.setColor(color, node.id) }>
-                  Blue
-                </Radio>
-                {'  '}
-                <Radio name="colorPickerEditor" inline value="green" checked={ node.color === 'green' ? true : false } onChange={ (color) => this.setColor(color, node.id) }>
-                  Green
-                </Radio>
-                <Radio name="colorPickerEditor" inline value="initial" checked={ node.color === 'initial' ? true : false } onChange={ (color) => this.setColor(color, node.id) }>
-                  None
-                </Radio>
-              </FormGroup>
+              <Color
+                node={ node }
+                setColor={ this.setColor }/>
             </Tab>
 
+            {
+              /* View Size component in ./editorComponents/Size.jsx */
+            }
             <Tab eventKey={6} title="Size">
-              <FormGroup>
-                <Radio name="sizePicker" inline value="xs" checked={ node.size === 'xs' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
-                  XS
-                </Radio>
-                {'  '}
-                <Radio name="sizePicker" inline value="s" checked={ node.size === 's' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
-                  S
-                </Radio>
-                {'  '}
-                <Radio name="sizePicker" inline value="m" checked={ node.size === 'm' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
-                  M
-                </Radio>
-                <Radio name="sizePicker" inline value="l" checked={ node.size === 'l' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
-                  L
-                </Radio>
-                <Radio name="sizePicker" inline value="xl" checked={ node.size === 'xl' ? true : false } onChange={ (size) => this.setSize(size, node.id) }>
-                  XL
-                </Radio>
-              </FormGroup>
+              <Size
+                node={ node }
+                setSize={ this.setSize }/>
             </Tab>
 
           </Tabs>

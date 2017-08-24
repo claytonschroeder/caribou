@@ -1,7 +1,7 @@
 Pallid sturgeon demo
 =====================
 
-A demo of pallid sturgeon database.
+A demo of pallid sturgeon database. Allows users to organize and store research findings overlayed on an influence diagram or other static image.
 
 
 Install the dependencies and start the server.
@@ -11,6 +11,10 @@ npm install
 npm webpack (to start front end)
 npm server (to start api server)
 open http://localhost:8000
+
+other options:
+npm start (builds the webpack and starts api server)
+npm build (rebuilds the build folder)
 ```
 
 ### Static Files

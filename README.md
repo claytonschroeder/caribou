@@ -21,6 +21,21 @@ Do not directly modify the build folder.
 
 For example, if you copy a file called my_image.png into the assets folder, once webpack builds and copies assets into build you can access it using `http://localhost:8000/build/my_image.png`.
 
+### Database Config
+
+You will need to configure your personal database credentials in a .env file.
+
+DB_NAME=[your database name]
+DB_USERNAME=[your username]
+DB_PASSWORD=[your password]
+
+!!!THIS VERSION CURRENTLY RELIES ON SEEDED DATA!!!
+
+migrate the latest version of the database by executing:
+  npm run knex migrate:latest
+Then seed the database by executing:
+  npm run knex seed:run
+
 ### Linting
 
 This boilerplate project includes React ESLint configuration.

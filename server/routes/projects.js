@@ -43,14 +43,7 @@ module.exports = () => {
 
   // Function to add filetype to end of file name
   function getType(type){
-    switch(type){
-      case 'image/jpeg':
-        return '.jpg'
-      break;
-      case 'application/pdf':
-        return '.pdf'
-      break;
-    }
+    return type.substring(type.indexOf("/")+1)
   }
 
   // Storage config
@@ -59,7 +52,7 @@ module.exports = () => {
       cb(null, 'uploads/')
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + getType(file.mimetype))
+      cb(null, file.fieldname + '-' + Date.now() + '.' + getType(file.mimetype))
     }
   })
 

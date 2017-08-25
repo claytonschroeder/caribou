@@ -5,7 +5,6 @@ class Info extends Component {
   constructor(props) {
     super(props)
     this.editButton = this.editButton.bind(this);
-    this.openInNewWindow = this.openInNewWindow.bind(this);
   }
 
   editButton(id){

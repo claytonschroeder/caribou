@@ -269,7 +269,7 @@ class Editor extends Component {
                                         <Button onClick={ () => this.removeAttachment(i, index, node.id) }bsStyle="danger">Remove Attachment</Button>
                                       </div>
                                     ) : (
-                                      <FormGroup>
+                                      <FormGroup className='upload-attachment'>
                                         <FormControl
                                           id="formControlsFile"
                                           type="file"
@@ -349,7 +349,7 @@ class Editor extends Component {
                                         <Button onClick={ () => this.removeAttachment(i, index, node.id) }bsStyle="danger">Remove Attachement</Button>
                                       </div>
                                     ) : (
-                                      <FormGroup>
+                                      <FormGroup className='upload-attachment'>
                                         <FormControl
                                           id="formControlsFile"
                                           type="file"

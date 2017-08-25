@@ -198,7 +198,7 @@ class Editor extends Component {
       )
       editorForm = (
         <Panel id="info-panel" header={ title } bsStyle="warning">
-          <Tabs defaultActiveKey={1} onSelect={ key => this.setState({activeTab: key}) } id="uncontrolled-tab-example">
+          <Tabs defaultActiveKey={ this.props.currentTab } onSelect={ key => this.setState({activeTab: key}, this.props.updateTab(key)) } id="uncontrolled-tab-example">
 
 
 

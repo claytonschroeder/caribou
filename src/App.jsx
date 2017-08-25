@@ -39,7 +39,8 @@ class App extends Component {
       blueSelected: true,
       greenSelected: true,
       initialSelected: true,
-      nodes: this.store.getState().nodes
+      nodes: this.store.getState().nodes,
+      currentTab: 1
     }
 
     this.actions = actions(this.store);
@@ -58,6 +59,7 @@ class App extends Component {
     this.closeEditor = this.closeEditor.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.selectSize = this.selectSize.bind(this);
+    this.updateTab = this.updateTab.bind(this);
   }
 
   componentDidMount(){
@@ -66,6 +68,13 @@ class App extends Component {
         loading: false,
         image: response.image,
       }, this.store.updateState(response.nodes))
+    })
+  }
+
+  /* Indicates which tab is active in the Info and Summary components */
+  updateTab(tab){
+    this.setState({
+      currentTab: tab <= 4 ? tab : 1
     })
   }
 
@@ -269,6 +278,8 @@ class App extends Component {
     let nodeInfo, nodeEdit;
     nodeInfo = this.state.selectedNode ?  (
       <Info
+        updateTab = { this.updateTab }
+        currentTab = { this.state.currentTab }
         node = { this.state.selectedNode }
         editNode = { this.editNode } />
     ) : null
@@ -276,6 +287,8 @@ class App extends Component {
     nodeEdit = this.state.editNode ?  (
       <Editor
         { ...this.actions }
+        updateTab = { this.updateTab }
+        currentTab = { this.state.currentTab }
         closeEditor = { this.closeEditor }
         node = { this.state.editNode }
         updateEditState = { this.updateEditState }

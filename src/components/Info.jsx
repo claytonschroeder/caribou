@@ -33,7 +33,7 @@ class Info extends Component {
     if(node){
       nodeInfo = (
         <Panel id="info-panel" header={ node.name ? node.name : 'No Name Given' } bsStyle="primary">
-          <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
+          <Tabs defaultActiveKey={ this.props.currentTab } id="uncontrolled-tab-example" onSelect={ key => this.props.updateTab(key) }>
 
             <Tab eventKey={1} title="Summary">
               <p>{ node.notes.summary.description ? node.notes.summary.description : 'no description given for this node'}</p>

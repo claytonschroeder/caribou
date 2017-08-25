@@ -1,3 +1,5 @@
+import Api from '../lib/api.js';
+
 export default function(store) {
   return {
     updateName: (id, data) => {
@@ -233,18 +235,25 @@ export default function(store) {
         break;
       }
 
-      // find the index of the node we want to modify
-      const index = store.getState().nodes.findIndex(node => node.id === id);
+      let formData = new FormData(); // Currently empty
 
-      // create a copy of that node object
-      const node = { ...store.getState().nodes[index] };
+      formData.append('file', file[0], file[0].name);
 
-      // modify the specific item inside the node
-      node.notes[location][evidenceIndex].references[referenceIndex].attachment = file.base64;
-      node.notes[location][evidenceIndex].references[referenceIndex].fileName = file.name;
+      Api.upload('/projects/upload', formData).then(response => {
+        // find the index of the node we want to modify
+        const index = store.getState().nodes.findIndex(node => node.id === id);
 
-      // update the node in the state array
-      store.updateNode(node.id, node);
+        // create a copy of that node object
+        const node = { ...store.getState().nodes[index] };
+
+        // modify the specific item inside the node
+        node.notes[location][evidenceIndex].references[referenceIndex].attachment = response.path;
+        node.notes[location][evidenceIndex].references[referenceIndex].fileName = response.originalName;
+
+        // update the node in the state array
+        store.updateNode(node.id, node);
+
+      })
     },
     removeAttachment: (evidenceIndex, referenceIndex, id, activeTab) => {
       let location;

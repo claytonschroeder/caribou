@@ -6,6 +6,7 @@ import Summary from './editorComponents/Summary.jsx'
 import Uncertain from './editorComponents/Uncertain.jsx'
 import Size from './editorComponents/Size.jsx'
 import Color from './editorComponents/Color.jsx'
+import DeleteModal from './editorComponents/DeleteModal.jsx'
 
 import FileBase64 from 'react-file-base64';
 
@@ -15,7 +16,8 @@ class Editor extends Component {
     this.state = {
       evidenceIndex: null,
       referenceIndex: null,
-      currentId: null
+      currentId: null,
+      showDeleteModal: false
     }
     this.saveChanges = this.saveChanges.bind(this);
     this.updateName = this.updateName.bind(this);
@@ -30,6 +32,20 @@ class Editor extends Component {
     this.removeLink = this.removeLink.bind(this);
     this.saveSummaryChanges = this.saveSummaryChanges.bind(this);
     this.saveUncertain = this.saveUncertain.bind(this);
+    this.showDeleteModal = this.showDeleteModal.bind(this);
+    this.hideDeleteModal = this.hideDeleteModal.bind(this);
+  }
+
+  showDeleteModal(){
+    this.setState({
+      showDeleteModal: true
+    })
+  }
+
+  hideDeleteModal(){
+    this.setState({
+      showDeleteModal: false
+    })
   }
 
   saveAttachment(node, i, index, file){
@@ -112,6 +128,9 @@ class Editor extends Component {
   deleteNode(node){
     this.props.deleteNode(node.id)
     this.props.updateEditState()
+    this.setState({
+      showDeleteModal: false
+    })
   }
 
   updateName(node){
@@ -183,7 +202,6 @@ class Editor extends Component {
 
     const node = this.props.node;
 
-
     if(node){
       const title = (
         <form>
@@ -197,6 +215,11 @@ class Editor extends Component {
       )
       editorForm = (
         <Panel id="info-panel" header={ title } bsStyle="warning">
+          <DeleteModal
+            shouldDisplay={ this.state.showDeleteModal }
+            node={ node }
+            deleteNode={ this.deleteNode }
+            hideDeleteModal={ this.hideDeleteModal }/>
           <Tabs defaultActiveKey={ this.props.currentTab } onSelect={ key => this.props.updateTab(key) } id="uncontrolled-tab-example">
 
 
@@ -418,7 +441,7 @@ class Editor extends Component {
               null
             )
           }
-          <Button id="delete-button" bsStyle="danger" onClick={ () => this.deleteNode(node) } >Delete Node</Button>
+          <Button id="delete-button" bsStyle="danger" onClick={ this.showDeleteModal } >Delete Node</Button>
           <Button id="delete-button" onClick={ () => this.props.closeEditor(node) } >Close</Button>
         </Panel>
       )

@@ -12,11 +12,6 @@ class Info extends Component {
     this.props.editNode(id)
   }
 
-  openInNewWindow(file){
-    let win = window.open();
-    win.document.write('<iframe src="' + file + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>')
-  }
-
   render() {
 
     let nodeInfo;
@@ -63,9 +58,7 @@ class Info extends Component {
 
                               let referenceAttachment = reference.attachment ? (
                                 <li>
-                                  <a onClick={ () => this.openInNewWindow(reference.attachment ? reference.attachment : null) }>
-                                    { reference.fileName ? reference.fileName : null }
-                                  </a>
+                                  <a href={ reference.attachment ? reference.attachment : null } target="_blank">{ reference.fileName ? reference.fileName : null }</a>
                                 </li>
                               ) : null
                               return (
@@ -104,9 +97,7 @@ class Info extends Component {
 
                               let referenceAttachment = reference.attachment ? (
                                 <li>
-                                  <a onClick={ () => this.openInNewWindow(reference.attachment ? reference.attachment : null) }>
-                                    { reference.fileName ? reference.fileName : null }
-                                  </a>
+                                  <a href={ reference.attachment ? reference.attachment : null } target="_blank">{ reference.fileName ? reference.fileName : null }</a>
                                 </li>
                               ) : null
                               return (

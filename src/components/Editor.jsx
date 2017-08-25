@@ -13,7 +13,6 @@ class Editor extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeTab: 1,
       evidenceIndex: null,
       referenceIndex: null,
       currentId: null
@@ -34,11 +33,11 @@ class Editor extends Component {
   }
 
   saveAttachment(node, i, index, file){
-    this.props.uploadAttachment(file, i, index, node.id, this.state.activeTab)
+    this.props.uploadAttachment(file, i, index, node.id, this.props.currentTab)
   }
 
   uploadAttachment(file){
-    this.props.uploadAttachment(file, this.state.evidenceIndex, this.state.referenceIndex, this.state.currentId, this.state.activeTab)
+    this.props.uploadAttachment(file, this.state.evidenceIndex, this.state.referenceIndex, this.state.currentId, this.props.currentTab)
   }
 
   getLocation(i, index, id){
@@ -50,11 +49,11 @@ class Editor extends Component {
   }
 
   removeAttachment(i, index, id){
-    this.props.removeAttachment(i, index, id, this.state.activeTab)
+    this.props.removeAttachment(i, index, id, this.props.currentTab)
   }
 
   removeLink(i, index, id, ref){
-    this.props.removeLink(i, index, id, this.state.activeTab);
+    this.props.removeLink(i, index, id, this.props.currentTab);
     if(ref){
       this.setState({[ref]: ""})
     }
@@ -69,7 +68,7 @@ class Editor extends Component {
   }
 
   addNew(node){
-    switch(this.state.activeTab){
+    switch(this.props.currentTab){
       case 2:
         this.props.addNewStrongEvidence(node.id);
       break;
@@ -83,7 +82,7 @@ class Editor extends Component {
   }
 
   addNewReference(node, i){
-    switch(this.state.activeTab){
+    switch(this.props.currentTab){
       case 2:
         this.props.addNewStrongReference(node.id, i)
       break;
@@ -94,7 +93,7 @@ class Editor extends Component {
   }
 
   saveChanges(node, ref){
-    switch(this.state.activeTab){
+    switch(this.props.currentTab){
       case 1:
         this.saveSummaryChanges(node)
       break;
@@ -198,7 +197,7 @@ class Editor extends Component {
       )
       editorForm = (
         <Panel id="info-panel" header={ title } bsStyle="warning">
-          <Tabs defaultActiveKey={ this.props.currentTab } onSelect={ key => this.setState({activeTab: key}, this.props.updateTab(key)) } id="uncontrolled-tab-example">
+          <Tabs defaultActiveKey={ this.props.currentTab } onSelect={ key => this.props.updateTab(key) } id="uncontrolled-tab-example">
 
 
 
@@ -413,7 +412,7 @@ class Editor extends Component {
 
           </Tabs>
           {
-            this.state.activeTab === 2 || this.state.activeTab === 3 || this.state.activeTab === 4 ? (
+            this.props.currentTab === 2 || this.props.currentTab === 3 || this.props.currentTab === 4 ? (
               <Button id="add-button" bsStyle="success" onClick={ () => this.addNew(node) } >Add New Evidence</Button>
             ) : (
               null

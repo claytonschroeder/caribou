@@ -15,32 +15,8 @@
       "createdAt": null,
       "updatedAt": null
     },
-    "strongEvidence": [
-      {
-        "detail": null,
-        "references": [
-          {
-            "id": null,
-            "link": null
-          }
-        ]
-      }
-    ],
-    "weakEvidence": [
-      {
-        "detail": null,
-        "references": [
-          {
-            "id": null,
-            "link": null
-          }
-        ]
-      }
-    ],
-    "uncertain": [
-      {
-        "detail": null
-      }
-    ]
+    "strongEvidence": [],
+    "weakEvidence": [],
+    "uncertain": []
   }
 }

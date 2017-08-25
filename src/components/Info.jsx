@@ -36,12 +36,12 @@ class Info extends Component {
           <Tabs defaultActiveKey={ this.props.currentTab } id="uncontrolled-tab-example" onSelect={ key => this.props.updateTab(key) }>
 
             <Tab eventKey={1} title="Summary">
-              <p>{ node.notes.summary.description ? node.notes.summary.description : 'no description given for this node'}</p>
+              <p>{ node.notes.summary.description ? node.notes.summary.description : 'No summary for this node.'}</p>
             </Tab>
 
             <Tab eventKey={2} title={ `Strong Evidence - (${strongCount})` }>
               {
-                node.notes.strongEvidence.map((evidence, i) => {
+                node.notes.strongEvidence.length > 0 ? node.notes.strongEvidence.map((evidence, i) => {
                   if(evidence.detail){
                     return (
                       <div key={ i }>
@@ -72,15 +72,17 @@ class Info extends Component {
                       </div>
                     )
                   } else {
-                    return null
+                    return (<p key={ i }>No strong evidence.</p>)
                   }
-                })
+                }) : (
+                  <p>No strong evidence.</p>
+                )
               }
             </Tab>
 
             <Tab eventKey={3} title={ `Weak/Conflicting Evidence - (${weakCount})` }>
               {
-                node.notes.weakEvidence.map((evidence, i) => {
+                node.notes.weakEvidence.length > 0 ? node.notes.weakEvidence.map((evidence, i) => {
                   if(evidence.detail){
                     return (
                       <div key={ i }>
@@ -111,15 +113,17 @@ class Info extends Component {
                       </div>
                     )
                   } else {
-                    return null
+                    return (<p key={ i }>No weak evidence.</p>)
                   }
-                })
+                }) : (
+                  <p>No weak evidence.</p>
+                )
               }
             </Tab>
 
             <Tab eventKey={4} title={ `Uncertain Evidence - (${uncertainCount})` }>
               {
-                node.notes.uncertain.map((evidence, i) => {
+                node.notes.uncertain.length > 0 ? node.notes.uncertain.map((evidence, i) => {
                   if(evidence.detail){
                     return (
                       <div key={ i }>
@@ -127,9 +131,11 @@ class Info extends Component {
                       </div>
                     )
                   } else {
-                    return null
+                    return (<p key={ i }>No uncertain evidence.</p>)
                   }
-                })
+                }) : (
+                  <p>No uncertain evidence.</p>
+                )
               }
             </Tab>
 

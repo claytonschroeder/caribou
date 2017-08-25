@@ -280,6 +280,10 @@ export default function(store) {
       store.updateNode(node.id, node);
     },
     removeLink: (evidenceIndex, referenceIndex, id, activeTab) => {
+      console.log(evidenceIndex)
+      console.log(referenceIndex)
+      console.log(id)
+      console.log(activeTab)
       let location;
 
       switch(activeTab){

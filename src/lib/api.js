@@ -27,6 +27,13 @@ class Api {
     }).then(response => response.json());
   }
 
+  static upload(path, data) {
+    return fetch('/api' + path, {
+      method: 'POST',
+      body: data
+    }).then(response => response.json());
+  }
+
   static put(path, data) {
     return fetch('/api' + path, {
       method: 'PUT',

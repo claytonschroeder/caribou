@@ -33,6 +33,10 @@ class Editor extends Component {
     this.saveUncertain = this.saveUncertain.bind(this);
   }
 
+  saveAttachment(node, i, index, file){
+    this.props.uploadAttachment(file, i, index, node.id, this.state.activeTab)
+  }
+
   uploadAttachment(file){
     this.props.uploadAttachment(file, this.state.evidenceIndex, this.state.referenceIndex, this.state.currentId, this.state.activeTab)
   }
@@ -265,9 +269,14 @@ class Editor extends Component {
                                         <Button onClick={ () => this.removeAttachment(i, index, node.id) }bsStyle="danger">Remove Attachment</Button>
                                       </div>
                                     ) : (
-                                      <FileBase64
-                                        multiple={ false }
-                                        onDone={ this.uploadAttachment } />
+                                      <FormGroup>
+                                        <FormControl
+                                          id="formControlsFile"
+                                          type="file"
+                                          label="File"
+                                          onChange={ (event) => this.saveAttachment(node, i, index, event.currentTarget.files) }
+                                        />
+                                      </FormGroup>
                                     )
                                   }
                                 </FormGroup>
@@ -340,9 +349,14 @@ class Editor extends Component {
                                         <Button onClick={ () => this.removeAttachment(i, index, node.id) }bsStyle="danger">Remove Attachement</Button>
                                       </div>
                                     ) : (
-                                      <FileBase64
-                                        multiple={ false }
-                                        onDone={ this.uploadAttachment } />
+                                      <FormGroup>
+                                        <FormControl
+                                          id="formControlsFile"
+                                          type="file"
+                                          label="File"
+                                          onChange={ (event) => this.saveAttachment(node, i, index, event.currentTarget.files) }
+                                        />
+                                      </FormGroup>
                                     )
                                   }
                                 </FormGroup>

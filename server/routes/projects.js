@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
+const multer  = require('multer')
+
 module.exports = () => {
 
   router.get('/', (request, response) => {
@@ -38,6 +40,49 @@ module.exports = () => {
       }
     })
   });
+
+  // Function to add filetype to end of file name
+  function getType(type){
+    switch(type){
+      case 'image/jpeg':
+        return '.jpg'
+      break;
+      case 'application/pdf':
+        return '.pdf'
+      break;
+    }
+  }
+
+  // Storage config
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + getType(file.mimetype))
+    }
+  })
+
+  // Upload config with storage
+  var upload = multer({ storage: storage }).single('file')
+
+  router.post('/upload', (request, response) => {
+    upload(request, response, function (err) {
+      if (err) {
+        console.log('err:', err)
+        response.json({'status': 'error'})
+        // An error occurred when uploading
+        return
+      }
+      const file = request.file
+      response.json({
+        'status': 'success',
+        'originalName': file.originalname,
+        'path': file.path
+      })
+      // Everything went fine
+    })
+  })
 
   return router;
 };

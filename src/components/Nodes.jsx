@@ -52,15 +52,16 @@ class Nodes extends Component {
 
     const nodes = this.props.nodes ? this.props.nodes.map((node) => {
       return <Node
-        selectedNode = { this.props.selectedNode }
-        editNode = { this.props.editNode }
-        key = { node.id }
-        data = { node }
-        selectNode = {this.selectNode}
-        redSelected = { this.props.redSelected }
-        blueSelected = { this.props.blueSelected }
-        greenSelected = { this.props.greenSelected }
-        initialSelected = { this.props.initialSelected } />
+        updateCoordinates={ this.props.updateCoordinates }
+        selectedNode={ this.props.selectedNode }
+        editNode={ this.props.editNode }
+        key={ node.id }
+        data={ node }
+        selectNode={this.selectNode}
+        redSelected={ this.props.redSelected }
+        blueSelected={ this.props.blueSelected }
+        greenSelected={ this.props.greenSelected }
+        initialSelected={ this.props.initialSelected } />
 
     }) : null
 

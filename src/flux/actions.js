@@ -280,10 +280,6 @@ export default function(store) {
       store.updateNode(node.id, node);
     },
     removeLink: (evidenceIndex, referenceIndex, id, activeTab) => {
-      console.log(evidenceIndex)
-      console.log(referenceIndex)
-      console.log(id)
-      console.log(activeTab)
       let location;
 
       switch(activeTab){
@@ -306,5 +302,21 @@ export default function(store) {
       // update the node in the state array
       store.updateNode(node.id, node);
     },
+    updateCoordinates: (id, x, y) => {
+
+      // find the index of the node we want to modify
+      const index = store.getState().nodes.findIndex(node => node.id === id);
+
+      // create a copy of that node object
+      const node = { ...store.getState().nodes[index] };
+
+      // modify the specific item inside the node
+      // need to find a way to make the node actually go where its dropped...
+      node.x = node.x + (x);
+      node.y = node.y + (y);
+
+      // update the node in the state array
+      store.updateNode(node.id, node);
+    }
   }
 }

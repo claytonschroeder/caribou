@@ -60,6 +60,7 @@ class App extends Component {
     this.uploadImage = this.uploadImage.bind(this);
     this.selectSize = this.selectSize.bind(this);
     this.updateTab = this.updateTab.bind(this);
+    this.updateCoordinates = this.updateCoordinates.bind(this);
   }
 
   componentDidMount(){
@@ -69,6 +70,10 @@ class App extends Component {
         image: response.image,
       }, this.store.updateState(response.nodes))
     })
+  }
+
+  updateCoordinates(id, x, y){
+    this.actions.updateCoordinates(id, x, y)
   }
 
   /* Indicates which tab is active in the Info and Summary components */
@@ -304,6 +309,7 @@ class App extends Component {
         </Grid>
         <Grid>
           <Nodes
+            updateCoordinates = { this.updateCoordinates }
             uploadImage = { this.uploadImage }
             hideNode = { this.hideNode }
             viewLegend = { this.state.viewLegend }

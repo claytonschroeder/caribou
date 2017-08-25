@@ -82,7 +82,7 @@ class Node extends Component {
     }
     const klass = ( (this.props.selectedNode && this.props.selectedNode.id === this.props.data.id) || (this.props.editNode && this.props.editNode.id === this.props.data.id) ) ? 'single-node-selected' : 'single-node'
     return (
-      <div className={ klass } style={nodeStyle} onClick={ () => this.props.selectNode(this.props.data.id) }>
+      <div draggable='true' className={ klass } style={nodeStyle} onDragEnd={ (event) => this.props.updateCoordinates(this.props.data.id, event.nativeEvent.offsetX, event.nativeEvent.offsetY) } onClick={ () => this.props.selectNode(this.props.data.id) }>
       </div>
     );
   }

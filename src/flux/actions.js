@@ -303,17 +303,53 @@ export default function(store) {
       store.updateNode(node.id, node);
     },
     updateCoordinates: (id, x, y) => {
-
       // find the index of the node we want to modify
       const index = store.getState().nodes.findIndex(node => node.id === id);
 
       // create a copy of that node object
       const node = { ...store.getState().nodes[index] };
 
-      // modify the specific item inside the node
-      // need to find a way to make the node actually go where its dropped...
-      node.x = node.x + (x);
-      node.y = node.y + (y);
+      let size;
+      switch(node.size){
+        case 'xs':
+          size = 10;
+        break;
+        case 's':
+          size = 20;
+        break;
+        case 'm':
+          size = 30;
+        break;
+        case 'l':
+          size = 40;
+        break;
+        case 'xl':
+          size = 50;
+        break;
+      }
+
+      y = y - size;
+      let offsetY = y;
+      let offsetX = x;
+
+      console.log(node)
+
+      if(x > 0 && x > (size * 0.5)){
+        offsetX = offsetX * 1.1
+      }
+      if(x < 0 && x < -(size * 0.5)){
+        offsetX = offsetX * 1.1
+      }
+
+      if(y > 0 && y > (size * 0.5)){
+        offsetY = offsetY * 1.1
+      }
+      if(y < 0 && y < -(size * 0.5)){
+        offsetY = offsetY * 1.1
+      }
+
+      node.y = (node.y) + (offsetY);
+      node.x = (node.x) + (offsetX);
 
       // update the node in the state array
       store.updateNode(node.id, node);

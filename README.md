@@ -8,8 +8,8 @@ Install the dependencies and start the server.
 
 ```
 npm install
-npm webpack (to start front end)
-npm server (to start api server)
+npm run webpack (to start front end)
+npm run server (to start api server)
 open http://localhost:8000
 
 other options:

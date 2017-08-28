@@ -20,7 +20,6 @@ class Editor extends Component {
       showDeleteModal: false
     }
     this.saveChanges = this.saveChanges.bind(this);
-    this.updateName = this.updateName.bind(this);
     this.deleteNode = this.deleteNode.bind(this);
     this.addNew = this.addNew.bind(this);
     this.setColor = this.setColor.bind(this);
@@ -133,10 +132,6 @@ class Editor extends Component {
     })
   }
 
-  updateName(node){
-    this.props.updateName(node.id, { name: findDOMNode(this.refs.name).value });
-  }
-
   saveSummaryChanges(id, description) {
     this.props.updateSummary(id, { description: description });
   }
@@ -199,19 +194,23 @@ class Editor extends Component {
 
   render() {
     let editorForm;
-
     const node = this.props.node;
-
+    const name = node.name ? node.name : '';
+    const stateName = this.state.name ? this.state.name : '';
+    const saveName = name !== stateName ? (
+      <Button id="save-button" bsStyle="success" onClick={ () => this.props.updateName(node.id, stateName) } >Save</Button>
+      ) : null
     if(node){
       const title = (
-        <form>
-          <FormControl
-            type="text"
-            placeholder="Enter a name"
-            ref="name"
-            defaultValue={ node.name ? node.name : '' }
-            onChange= { () => this.updateName(node) } />
-        </form>
+          <form>
+            <FormControl
+              type="text"
+              placeholder="Enter a name"
+              ref="name"
+              defaultValue={ node.name ? node.name : '' }
+              onChange= { (event) => this.setState({name: event.currentTarget.value}) } />
+              { saveName }
+          </form>
       )
       editorForm = (
         <Panel id="info-panel" header={ title } bsStyle="warning">

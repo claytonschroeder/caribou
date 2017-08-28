@@ -10,7 +10,7 @@ export default function(store) {
       const node = { ...store.getState().nodes[index] };
 
       // modify the specific item inside the node
-      node.name = data.name;
+      node.name = data;
 
       // update the node in the state array
       store.updateNode(node.id, node);

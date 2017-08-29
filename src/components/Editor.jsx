@@ -197,8 +197,8 @@ class Editor extends Component {
     const node = this.props.node;
     const name = node.name ? node.name : '';
     const stateName = this.state.name ? this.state.name : '';
-    const saveName = name !== stateName ? (
-      <Button id="save-button" bsStyle="success" onClick={ () => this.props.updateName(node.id, stateName) } >Save</Button>
+    const saveName = (name !== stateName) && (stateName !== '') ? (
+      <Button id="save-button" bsStyle="success" onClick={ () => this.props.updateName(node.id, stateName) } >Save Name</Button>
       ) : null
     if(node){
       const title = (
@@ -239,6 +239,11 @@ class Editor extends Component {
             <Tab eventKey={2} title="Strong Evidence">
               {
                 node.notes.strongEvidence.map((evidence, i) => {
+                  const propEvidence = evidence.detail ? evidence.detail : '';
+                  const stateEvidence = this.state[`strong-${i}`] ? this.state[`strong-${i}`] : '';
+                  const saveStrongButton = (propEvidence !== stateEvidence) && (stateEvidence !== '') ? (
+                    <Button id="save-button" bsStyle="success" onClick={ () => this.saveStrongEvidence(node, this.state[`strong-${i}`]) } >Save Changes</Button>
+                    ) : null
                   return (
                     <div key={ i }>
                       <form>
@@ -247,8 +252,9 @@ class Editor extends Component {
                             componentClass="textarea"
                             placeholder="Enter your evidence"
                             ref={ `strong-${i}` }
-                            onChange= { () => this.saveChanges(node) }
+                            onChange= { (event) => this.setState({[`strong-${i}`]: event.currentTarget.value}) }
                             defaultValue={ evidence.detail ? evidence.detail : '' } />
+                          { saveStrongButton }
                         </FormGroup>
                       </form>
                       <ul key={ i }>
@@ -319,6 +325,11 @@ class Editor extends Component {
             <Tab eventKey={3} title="Weak/Conflicting Evidence">
               {
                 node.notes.weakEvidence.map((evidence, i) => {
+                  const propEvidence = evidence.detail ? evidence.detail : '';
+                  const stateEvidence = this.state[`weak-${i}`] ? this.state[`weak-${i}`] : '';
+                  const saveWeakButton = (propEvidence !== stateEvidence) && (stateEvidence !== '') ? (
+                    <Button id="save-button" bsStyle="success" onClick={ () => this.saveWeakEvidence(node, this.state[`weak-${i}`]) } >Save Changes</Button>
+                    ) : null
                   return (
                     <div key={ i }>
                       <form>
@@ -327,8 +338,9 @@ class Editor extends Component {
                             componentClass="textarea"
                             placeholder="Enter your evidence"
                             ref={ `weak-${i}` }
-                            onChange= { () => this.saveChanges(node) }
+                            onChange= { (event) => this.setState({[`weak-${i}`]: event.currentTarget.value}) }
                             defaultValue={ evidence.detail ? evidence.detail : '' } />
+                          { saveWeakButton }
                         </FormGroup>
                       </form>
                       <ul key={ i }>

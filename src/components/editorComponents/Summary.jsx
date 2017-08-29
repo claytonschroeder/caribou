@@ -18,7 +18,7 @@ class Summary extends Component {
     const id = this.props.node.id;
     const propDescription = this.props.node.notes.summary.description;
     const stateDescription = this.state.description ? this.state.description : propDescription;
-    const buttons = propDescription !== stateDescription ? (
+    const saveSummaryButton = propDescription !== stateDescription ? (
       <Button bsStyle='success' onClick={ () => this.saveChanges(id, stateDescription) }>Save Changes</Button>
     ) : (
       null
@@ -32,7 +32,7 @@ class Summary extends Component {
           onChange={ (event) => this.setState({description: event.currentTarget.value}) }
           defaultValue={ propDescription ? propDescription : '' } />
 
-          { buttons }
+          { saveSummaryButton }
 
       </form>
     )

@@ -32,7 +32,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Pallid Demo',
+      title: 'Hydroviz Demo',
       template: path.join(__dirname, 'assets/index.html')
     }),
     new CopyWebpackPlugin([

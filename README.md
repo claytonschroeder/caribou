@@ -1,7 +1,7 @@
-Pallid sturgeon demo
+Hydroviz demo
 =====================
 
-A demo of pallid sturgeon database. Allows users to organize and store research findings overlayed on an influence diagram or other static image.
+A demo of hyroviz data in the Missouri River.
 
 
 Install the dependencies and start the server.

@@ -18,15 +18,48 @@ class Toolbox extends Component {
     }
 
     this.getParams = this.getParams.bind(this);
+    this.getPrettyDate = this.getPrettyDate.bind(this);
 
   }
 
+  getPrettyDate(date){
+    const monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    const month = parseInt(date.slice(0,2)) - 1;
+    const day = parseInt(date.substr(3));
+    return monthArray[month] + " " + day
+  }
+
   getParams(){
-    const yr = findDOMNode(this.refs.startyear).value;
+    function validate(startDate, endDate){
+      const startMonth = parseInt(startDate.slice(0,2));
+      const endMonth = parseInt(endDate.slice(0,2));
+      const startDay = parseInt(startDate.substr(3));
+      const endDay = parseInt(endDate.substr(3));
+      if(endMonth < startMonth){
+        return false
+      }
+      if((endMonth === startMonth) && (endDay <= startDay)){
+        return false
+      }
+      return true
+    }
+
+    const startDate = findDOMNode(this.refs.startdate).value;
+    const endDate = findDOMNode(this.refs.enddate).value;
+    const yr = findDOMNode(this.refs.year).value;
     const lc = findDOMNode(this.refs.locations).value;
 
-    this.props.setParams(yr, lc)
+    const validDate = validate(startDate, endDate)
 
+    if(validDate){
+      this.setState({
+        validationState: null
+      }, this.props.setParams(yr, lc, startDate, endDate))
+    } else {
+      this.setState({
+        validationState: 'error'
+      })
+    }
   }
 
 
@@ -51,8 +84,28 @@ class Toolbox extends Component {
         </FormGroup>
 
         <FormGroup controlId="formControlsSelect" validationState={ this.state.validationState }>
+        <ControlLabel>Select Date Range</ControlLabel>
+        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='startdate'>
+          {
+            dates.map((date, index) => {
+
+              return (<option key={ index } value={ date }>{ this.getPrettyDate(date) }</option>)
+            })
+          }
+        </FormControl>
+
+        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='enddate'>
+          {
+            dates.map((date, index) => {
+              return (<option key={ index } value={ date }>{ this.getPrettyDate(date) }</option>)
+            })
+          }
+        </FormControl>
+        </FormGroup>
+
+        <FormGroup controlId="formControlsSelect">
         <ControlLabel>Select a Year</ControlLabel>
-        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='startyear'>
+        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='year'>
           {
             years.map((year, index) => {
               return (<option key={ index } value={ year }>{ year }</option>)

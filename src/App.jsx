@@ -211,6 +211,8 @@ class App extends Component {
     let Alt2Max = [];
     let Alt1Tenth = [];
     let Alt2Tenth = [];
+    let Alt1Ninetieth = [];
+    let Alt2Ninetieth = [];
 
 
     // slice this array to only have the dates
@@ -220,11 +222,13 @@ class App extends Component {
         Alt1Min.push(item.min)
         Alt1Max.push(item.max)
         Alt1Tenth.push(item.tenth)
+        Alt1Ninetieth.push(item.ninetieth)
       } else {
         Alt2Data.push(item[year])
         Alt2Min.push(item.min)
         Alt2Max.push(item.max)
         Alt2Tenth.push(item.tenth)
+        Alt2Ninetieth.push(item.ninetieth)
       }
     })
     dataPoints.push(Alt1Data, Alt2Data)
@@ -318,6 +322,30 @@ class App extends Component {
     Alt2TenthData.pointHoverBorderColor = colorArray[7];
     Alt2TenthData.pointBackgroundColor = colorArray[7];
     chartDataArray.push(Alt2TenthData);
+
+    // alt 1 90th
+    let Alt1NintiethData = ObjectUtil.copy(chartDataTemplate);
+    Alt1NintiethData.label = 'Alt 1 Ninetieth Percentile';
+    Alt1NintiethData.data = Alt1Ninetieth;
+    Alt1NintiethData.backgroundColor = colorArray[8];
+    Alt1NintiethData.borderColor = colorArray[8];
+    Alt1NintiethData.pointBorderColor = colorArray[8];
+    Alt1NintiethData.pointHoverBackgroundColor = colorArray[8];
+    Alt1NintiethData.pointHoverBorderColor = colorArray[8];
+    Alt1NintiethData.pointBackgroundColor = colorArray[8];
+    chartDataArray.push(Alt1NintiethData);
+
+    // alt 2 90th
+    let Alt2NinetiethData = ObjectUtil.copy(chartDataTemplate);
+    Alt2NinetiethData.label = 'Alt 2 Ninetieth Percentile';
+    Alt2NinetiethData.data = Alt2Ninetieth;
+    Alt2NinetiethData.backgroundColor = colorArray[9];
+    Alt2NinetiethData.borderColor = colorArray[9];
+    Alt2NinetiethData.pointBorderColor = colorArray[9];
+    Alt2NinetiethData.pointHoverBackgroundColor = colorArray[9];
+    Alt2NinetiethData.pointHoverBorderColor = colorArray[9];
+    Alt2NinetiethData.pointBackgroundColor = colorArray[9];
+    chartDataArray.push(Alt2NinetiethData);
 
     // modify the year array to match the start and end year
     this.setState({

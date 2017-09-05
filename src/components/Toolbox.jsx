@@ -74,8 +74,7 @@ class Toolbox extends Component {
     const locations = this.props.locations ? this.props.locations : null;
 
     const content = this.props.alternatives && this.props.dates && this.props.locations && this.props.years ? (
-      <form>
-
+      <form className='toolbox'>
         <FormGroup controlId="formControlsSelect">
         <ControlLabel>Select a Location</ControlLabel>
         <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='locations'>
@@ -88,7 +87,7 @@ class Toolbox extends Component {
         </FormGroup>
 
         <FormGroup controlId="formControlsSelect" validationState={ this.state.validationState }>
-        <ControlLabel>Select Date Range</ControlLabel>
+        <ControlLabel>From:</ControlLabel>
         <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='startdate'>
           {
             dates.map((date, index) => {
@@ -97,7 +96,9 @@ class Toolbox extends Component {
             })
           }
         </FormControl>
-
+        </FormGroup>
+        <FormGroup controlId="formControlsSelect" validationState={ this.state.validationState }>
+        <ControlLabel>To:</ControlLabel>
         <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } defaultValue={ '12-31' }ref='enddate'>
           {
             dates.map((date, index) => {

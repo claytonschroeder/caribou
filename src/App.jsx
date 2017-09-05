@@ -111,6 +111,7 @@ class App extends Component {
 
 
   setParams(year, location, startDate, endDate){
+    console.log(year, location, startDate, endDate)
     let dates = this.state.dates;
 
     // this function gets each date and location from the data set and creates an array.

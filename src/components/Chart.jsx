@@ -25,8 +25,21 @@ class Chart extends Component {
       title: {
         display: true,
         text: this.props.chartData.location + ' - ' + this.props.chartData.year
+      },
+      legend: {
+        position: 'right'
       }
     } : null;
+
+    const scales = this.props.chartData ? {
+      yAxes: [{
+          display: true,
+          ticks: {
+            mirror: true,
+            beginAtZero: true
+          }
+        }]
+      } : null;
 
     const data = this.props.chartData ? {
       labels: this.props.chartData.labels,
@@ -35,10 +48,11 @@ class Chart extends Component {
     const content = this.props.chartData ? (
       <Line
         options={ options }
-        data={ data } />
+        data={ data }
+        scales={ scales } />
     ) : <span>select your data</span>;
     return(
-      <Col xs={12} md={8}>
+      <Col xs={12} md={10}>
         { content }
       </Col>
     )

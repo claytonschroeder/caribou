@@ -22,6 +22,10 @@ class Toolbox extends Component {
 
   }
 
+  componentDidMount() {
+    this.getParams()
+  }
+
   getPrettyDate(date){
     const monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const month = parseInt(date.slice(0,2)) - 1;
@@ -94,7 +98,7 @@ class Toolbox extends Component {
           }
         </FormControl>
 
-        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='enddate'>
+        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } defaultValue={ '12-31' }ref='enddate'>
           {
             dates.map((date, index) => {
               return (<option key={ index } value={ date }>{ this.getPrettyDate(date) }</option>)
@@ -113,13 +117,10 @@ class Toolbox extends Component {
           }
         </FormControl>
         </FormGroup>
-
-        <Button bsStyle='success' onClick={ this.getParams }>Load Data</Button>
-
       </form>
     ) : null
     return (
-      <Col xs={6} md={4}>
+      <Col xs={6} md={2}>
         { content }
       </Col>
     );

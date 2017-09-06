@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
+import { Col, FormGroup, ControlLabel, FormControl, Button, Checkbox } from 'react-bootstrap';
 import { findDOMNode } from 'react-dom';
 import ReactLoading from 'react-loading';
 import data from '../lib/testData/arrayOfObj.json';
@@ -18,7 +18,6 @@ class Toolbox extends Component {
     }
 
     this.getParams = this.getParams.bind(this);
-    this.getPrettyDate = this.getPrettyDate.bind(this);
 
   }
 
@@ -26,39 +25,29 @@ class Toolbox extends Component {
     this.getParams()
   }
 
-  getPrettyDate(date){
-    const monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    const month = parseInt(date.slice(0,2)) - 1;
-    const day = parseInt(date.substr(3));
-    return monthArray[month] + " " + day
-  }
-
   getParams(){
     function validate(startDate, endDate){
-      const startMonth = parseInt(startDate.slice(0,2));
-      const endMonth = parseInt(endDate.slice(0,2));
-      const startDay = parseInt(startDate.substr(3));
-      const endDay = parseInt(endDate.substr(3));
-      if(endMonth < startMonth){
+      let end = parseInt(endDate)
+      let start = parseInt(startDate)
+      if(end > start){
+        return true
+      } else {
         return false
       }
-      if((endMonth === startMonth) && (endDay <= startDay)){
-        return false
-      }
-      return true
     }
 
     const startDate = findDOMNode(this.refs.startdate).value;
     const endDate = findDOMNode(this.refs.enddate).value;
-    const yr = findDOMNode(this.refs.year).value;
-    const lc = findDOMNode(this.refs.locations).value;
+    const year = findDOMNode(this.refs.year).value;
+    const location = findDOMNode(this.refs.locations).value;
+    const type = findDOMNode(this.refs.type).value;
 
     const validDate = validate(startDate, endDate)
 
     if(validDate){
       this.setState({
         validationState: null
-      }, this.props.setParams(yr, lc, startDate, endDate))
+      }, this.props.setParams(year, location, startDate, endDate, type))
     } else {
       this.setState({
         validationState: 'error'
@@ -71,9 +60,11 @@ class Toolbox extends Component {
     const alternatives = this.props.alternatives ? this.props.alternatives : null;
     const dates = this.props.dates ? this.props.dates : null;
     const years = this.props.years ? this.props.years : null;
+    const dataType = this.props.dataType ? this.props.dataType : null;
     const locations = this.props.locations ? this.props.locations : null;
+    const models = this.props.models ? this.props.models : null;
 
-    const content = this.props.alternatives && this.props.dates && this.props.locations && this.props.years ? (
+    const params = this.props.alternatives && this.props.dates && this.props.locations && this.props.years ? (
       <form className='toolbox'>
         <FormGroup controlId="formControlsSelect">
         <ControlLabel>Select a Location</ControlLabel>
@@ -92,17 +83,17 @@ class Toolbox extends Component {
           {
             dates.map((date, index) => {
 
-              return (<option key={ index } value={ date }>{ this.getPrettyDate(date) }</option>)
+              return (<option key={ index } value={ date }>{ date }</option>)
             })
           }
         </FormControl>
         </FormGroup>
         <FormGroup controlId="formControlsSelect" validationState={ this.state.validationState }>
         <ControlLabel>To:</ControlLabel>
-        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } defaultValue={ '12-31' }ref='enddate'>
+        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } defaultValue={ 365 }ref='enddate'>
           {
             dates.map((date, index) => {
-              return (<option key={ index } value={ date }>{ this.getPrettyDate(date) }</option>)
+              return (<option key={ index } value={ date }>{ date }</option>)
             })
           }
         </FormControl>
@@ -118,11 +109,36 @@ class Toolbox extends Component {
           }
         </FormControl>
         </FormGroup>
+
+        <FormGroup controlId="formControlsSelect">
+        <ControlLabel>Select Data Type</ControlLabel>
+        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='type'>
+          {
+            dataType.map((type, index) => {
+              return (<option key={ index } value={ type }>{ type }</option>)
+            })
+          }
+        </FormControl>
+        </FormGroup>
+        <FormGroup controlId="formControlsSelect">
+        <ControlLabel>Select Model</ControlLabel>
+        <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } ref='model'>
+          {
+            models.map((model, index) => {
+              return (<option key={ index } value={ model }>{ model }</option>)
+            })
+          }
+        </FormControl>
+        </FormGroup>
       </form>
     ) : null
+
+
+
+
     return (
-      <Col xs={6} md={2}>
-        { content }
+      <Col md={ 2 }>
+        { params }
       </Col>
     );
   }

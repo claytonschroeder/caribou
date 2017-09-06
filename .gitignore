@@ -5,4 +5,5 @@ dist
 .env
 build
 uploads
-server/data
+data.csv
+converted.json

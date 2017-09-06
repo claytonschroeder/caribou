@@ -18,11 +18,79 @@ class Toolbox extends Component {
     }
 
     this.getParams = this.getParams.bind(this);
+    this.getNiceDate = this.getNiceDate.bind(this);
 
   }
 
   componentDidMount() {
     this.getParams()
+  }
+
+  getNiceDate(date){
+    let fullDate
+    let month;
+    let day;
+    if(date <= 31){
+      month = 'January '
+      day = date
+      fullDate = month + day
+    }
+    if(date > 31 && date <= 59){
+      month = 'February '
+      day = date - 31
+      fullDate = month + day
+    }
+    if(date > 59 && date <= 90){
+      month = 'March '
+      day = date - 59
+      fullDate = month + day
+    }
+    if(date > 90 && date <= 120){
+      month = 'April '
+      day = date - 90
+      fullDate = month + day
+    }
+    if(date > 120 && date <= 151){
+      month = 'May '
+      day = date - 120
+      fullDate = month + day
+    }
+    if(date > 151 && date <= 181){
+      month = 'June '
+      day = date - 151
+      fullDate = month + day
+    }
+    if(date > 181 && date <= 212){
+      month = 'July '
+      day = date - 181
+      fullDate = month + day
+    }
+    if(date > 212 && date <= 243){
+      month = 'August '
+      day = date - 212
+      fullDate = month + day
+    }
+    if(date > 243 && date <= 273){
+      month = 'September '
+      day = date - 243
+      fullDate = month + day
+    }
+    if(date > 273 && date <= 304){
+      month = 'October '
+      day = date - 273
+      fullDate = month + day
+    }
+    if(date > 304 && date <= 334){
+      month = 'November '
+      day = date - 304
+      fullDate = month + day
+    }
+    if(date > 334 && date <= 365){
+      month = 'December '
+      day = date - 334
+      fullDate = month + day
+    }
+    return fullDate
   }
 
   getParams(){
@@ -83,7 +151,7 @@ class Toolbox extends Component {
           {
             dates.map((date, index) => {
 
-              return (<option key={ index } value={ date }>{ date }</option>)
+              return (<option key={ index } value={ date }>{ this.getNiceDate(date) }</option>)
             })
           }
         </FormControl>
@@ -93,7 +161,7 @@ class Toolbox extends Component {
         <FormControl componentClass="select" placeholder="select" onChange={ this.getParams } defaultValue={ 365 }ref='enddate'>
           {
             dates.map((date, index) => {
-              return (<option key={ index } value={ date }>{ date }</option>)
+              return (<option key={ index } value={ date }>{ this.getNiceDate(date) }</option>)
             })
           }
         </FormControl>

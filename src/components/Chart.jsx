@@ -50,9 +50,9 @@ class Chart extends Component {
         options={ options }
         data={ data }
         scales={ scales } />
-    ) : <span>select your data</span>;
+    ) : <ReactLoading className='loading' type='spokes' color='aliceblue'/>;
     return(
-      <Col xs={12} md={10}>
+      <Col className={ this.props.chartData ? 'chart-container' : 'loading-container'} xs={ 12 } md={ 10 }>
         { content }
       </Col>
     )

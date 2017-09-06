@@ -2,80 +2,53 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
+const data = require('../data/converted.json')
+
 const multer  = require('multer')
 
 module.exports = () => {
 
-  router.get('/', (request, response) => {
-    db('projects').where('id', 1).then(project => {
-      response.json({
-        "status": "success",
-        "nodes": project[0].nodes,
-        "image": project[0].image,
-        "name": project[0].name
-      });
-    })
-  });
+  router.post('/', (request, response) => {
+    const year = request.body.year;
+    const location = request.body.location;
+    const startDate = parseInt(request.body.startDate);
+    const endDate = parseInt(request.body.endDate);
+    const type = request.body.type;
+    const alternatives = ['1 NO ACTION', '2 2003 BIOP PROJECTED A', '3 ALL MECHANICAL', '4 SPRING 42MAF', '5 FALL 35SL', '6 SPAWNING CUE' ];
 
-  router.post('/update', (request, response) => {
-    const requestBody = request.body;
-    db('projects').where('id', 1).then(project => {
-      const nodeObject = project[0].nodes.nodes;
-      if(JSON.stringify(nodeObject) === JSON.stringify(requestBody)){
-        response.json({
-          "status": "No Changes"
-        })
-      } else {
-        db('projects').where('id', 1).then(project => {
-          const nodesObj = project[0].nodes
-          nodesObj.nodes = requestBody
-          return db('projects').where('id', 1).update({
-            nodes: nodesObj
-          }).then(results => {
-            response.json({
-              "status": "Updated"
-            })
-          })
-        })
-      }
-    })
-  });
-
-  // Function to add filetype to end of file name
-  function getType(type){
-    return type.substring(type.indexOf("/")+1)
-  }
-
-  // Storage config
-  var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + '.' + getType(file.mimetype))
+    let dataObject = {
+      '1 NO ACTION': null,
+      '2 2003 BIOP PROJECTED A': null,
+      '3 ALL MECHANICAL': null,
+      '4 SPRING 42MAF': null,
+      '5 FALL 35SL': null,
+      '6 SPAWNING CUE': null
     }
-  })
 
-  // Upload config with storage
-  var upload = multer({ storage: storage }).single('file')
-
-  router.post('/upload', (request, response) => {
-    upload(request, response, function (err) {
-      if (err) {
-        console.log('err:', err)
-        response.json({'status': 'error'})
-        // An error occurred when uploading
-        return
-      }
-      const file = request.file
-      response.json({
-        'status': 'success',
-        'originalName': file.originalname,
-        'path': file.path
-      })
-      // Everything went fine
+    //filter the data by the parameters provided
+    const filtered = data.filter(function(item){
+      let itemDate = parseInt(item.Day)
+      return((item.Location === location) && (item['Flow-Stage'] === type) && (itemDate >= startDate) && (itemDate <= endDate))
     })
-  })
+
+    //seperate the data into alternatives and their data points
+    alternatives.forEach((alt, index) => {
+      let altDataArray = [];
+      filtered.forEach((item, i) => {
+        if(item.Alternative === alt){
+          altDataArray.push(item[year])
+        }
+      })
+      dataObject[alt] = altDataArray
+    })
+
+
+
+    response.json({
+      'status': 'success',
+      'data': dataObject
+    })
+  });
 
   return router;
 };

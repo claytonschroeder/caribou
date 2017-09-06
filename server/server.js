@@ -12,7 +12,7 @@ app.use(require('body-parser').json({limit: '5mb'}));
 
 
 //  example route
-// app.use('/api/projects', require('./routes/projects')());
+app.use('/api/projects', require('./routes/projects')());
 
 
 app.get('*', function (request, response){

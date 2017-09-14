@@ -26,21 +26,20 @@ class Info extends Component {
     if(zone){
       if(zone.eco_type === 'Boreal'){
         ecoIcon = (
-          <img className='icon' src="/build/images/tree.png" ></img>
+          <img className='icon' src="/images/tree.png" ></img>
         )
       }
       if(zone.eco_type === 'Mountain'){
         ecoIcon = (
-          <img className='icon' src="/build/images/mountain.png" ></img>
+          <img className='icon' src="/images/mountain.png" ></img>
         )
       }
       if(zone.eco_type === 'Northern'){
         ecoIcon = (
-          <img className='icon' src="/build/images/snow.png" ></img>
+          <img className='icon' src="/images/snow.png" ></img>
         )
       }
     }
-    console.log(ecoIcon)
     const content = zone ? (
       <Panel header={ zone.herd_name } className='info'>
         <h5 className='sub-heading'>Scientific Name</h5>

@@ -80,10 +80,26 @@ class App extends Component {
       )
     }) : null
 
+    function getColor(eco){
+      if(eco === 'Mountain'){
+        return '#E09FD9'
+      }
+      if(eco === 'Boreal'){
+        return '#C29B4C'
+      }
+      if(eco === 'Northern'){
+        return '#CBE399'
+      }
+      if(!eco){
+        return '#FFF'
+      }
+    }
+
     const list = areas ? areas.map((area, index) => {
     const name = area.herd_name.toUpperCase();
     const searchParams = this.state.searchBar.toUpperCase();
-    const display = name.includes(searchParams) ? { display: '' } : { display: 'none' }
+    const color = getColor(area.eco_type);
+    const display = name.includes(searchParams) ? { display: '', backgroundColor: color } : { display: 'none' }
       return (
         <div className="list-item"
           style={ display }
@@ -192,7 +208,7 @@ class App extends Component {
         <Row className="show-grid">
           <Col xs={12} md={8}>
             <Panel header='BC Caribou Data Tool' className='map'>
-              <img src="/build/images/caribou_by_ecotype_2011map_sm.jpg" alt="caribou distribution by ecotype" useMap="#caribou_ecotype_range"></img>
+              <img src="/images/caribou_by_ecotype_2011map_sm.jpg" alt="caribou distribution by ecotype" useMap="#caribou_ecotype_range"></img>
               <map name="caribou_ecotype_range">
                 { ecozones }
               </map>

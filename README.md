@@ -1,7 +1,7 @@
-Hydroviz demo
+Caribou Demo
 =====================
 
-A demo of hyroviz data in the Missouri River.
+A demo of BC Caribou herd data.
 
 
 Install the dependencies and start the server.

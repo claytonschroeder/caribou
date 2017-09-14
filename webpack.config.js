@@ -32,7 +32,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Hydroviz Demo',
+      title: 'Caribou',
       template: path.join(__dirname, 'assets/index.html')
     }),
     new CopyWebpackPlugin([

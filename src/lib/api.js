@@ -1,9 +1,7 @@
 class Api {
 
   static json(path) {
-    return fetch('/api' + path, {
-      credentials: 'include'
-    }).then(response => {
+    return fetch('/api' + path).then(response => {
       if(!response.ok) {
         throw Error('could not get /api' + path)
       }

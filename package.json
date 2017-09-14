@@ -69,7 +69,9 @@
     "react-dropzone": "^4.1.0",
     "react-dropzone-component": "^2.0.0",
     "react-file-base64": "^1.0.3",
+    "react-fontawesome": "^1.6.1",
     "react-loading": "^0.1.4",
+    "react-tap-event-plugin": "^2.0.1",
     "simple-statistics": "^4.1.1"
   }
 }

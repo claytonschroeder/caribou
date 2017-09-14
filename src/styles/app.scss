@@ -1,24 +1,77 @@
-.toolbox {
-  padding: 10px;
-  background-color: aliceblue;
-  border: 2px solid;
-  border-radius: 5px;
-  margin-top: 40px;
+.info {
+  .panel-heading {
+    font-size: 18px;
+    height: 50px;
+    .input {
+      background: url(/build/images/search-icon.png);
+      background-color: #fff;
+      padding-left: 30px;
+      background-repeat: no-repeat;
+      background-position: 0px;
+      width: 100%;
+    }
+  }
+  .panel-body {
+    padding: 0px;
+    height: 593px;
+    overflow-y: scroll;
+    .sub-heading {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      padding: 10px;
+    }
+    #herd-list {
+      .list-item {
+        cursor: pointer;
+        padding: 10px;
+        border-bottom: 1px solid #ddd
+      }
+      .list-item:hover {
+        background-color: #ddd;
+      }
+    }
+    p {
+      padding: 10px
+    }
+  }
 }
 
-.loading-container {
-  margin-top: 40px;
-  height: 468px;
-  border-radius: 5px;
-  border: 2px solid;
-  background-color: aquamarine;
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
-.chart-container {
-  margin-top: 40px;
+.eco-region {
+  display: flex;
 }
 
-.loading{
-  margin: auto;
-  line-height: 400px;
+.icon {
+  height: 20px;
+  padding: 0px;
+  margin-top: 10px;
+}
+
+.map {
+  .panel-heading {
+    font-size: 18px;
+    height: 50px;
+  }
+  .panel-body {
+    padding: 0px;
+  }
+}
+
+.chart {
+  .panel-heading {
+    font-size: 18px;
+    height: 50px;
+  }
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.panel {
+  border-radius: 0px;
 }

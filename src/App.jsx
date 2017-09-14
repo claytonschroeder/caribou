@@ -1,143 +1,228 @@
 import React, { Component } from 'react';
-import { Grid, Col, Row } from 'react-bootstrap';
-import ReactLoading from 'react-loading';
-// import data from './lib/testData/arrayOfObj.json';
+import { findDOMNode } from 'react-dom';
+import { Grid, Col, Row, OverlayTrigger, Popover, Panel } from 'react-bootstrap';
+import { Bar } from 'react-chartjs-2';
+
 import Api from './lib/api.js';
 import store from './flux/store.js';
 import actions from './flux/actions.js';
 
-import Toolbox from './components/Toolbox.jsx'
-import Chart from './components/Chart.jsx'
-import ss from 'simple-statistics';
+import Info from './components/Info.jsx'
 
 const ObjectUtil = require('./utilities/objectCopy.js');
+
 
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
-      data: 'data',
-      models: ['1', '2', '3', '4', '5', '6'],
-      alternatives: ['1 NO ACTION', '2 2003 BIOP PROJECTED A', '3 ALL MECHANICAL', '4 SPRING 42MAF', '5 FALL 35SL', '6 SPAWNING CUE' ],
-      locations: ['BB', 'BIS', 'BNMO', 'CLMT', 'FTPK', 'FTRA', 'GAPT', 'GARR', 'HEMO', 'MKC', 'NCNE', 'OAHE', 'OMA', 'STJ', 'STL', 'SUX', 'WPMT', 'WSN'],
-      dataType: ['FLOW', 'STAGE'],
+      searchBar: ''
     }
 
-    this.setParams = this.setParams.bind(this);
-    this.buildChartData = this.buildChartData.bind(this);
+    this.getZone = this.getZone.bind(this);
+    this.search = this.search.bind(this);
 
   }
-
 
   componentDidMount(){
-    let dayArray = [];
-    let yearArray = [];
-    for(let day = 1; day <= 365; day++){
-      dayArray.push(day)
-    }
-
-    for(let year = 1931; year <= 2012; year++){
-      yearArray.push(year)
-    }
-
-    this.setState({
-      dates: dayArray,
-      years: yearArray,
-      loading: false
+    Api.json('/data').then(response => {
+      this.setState({
+        data: response.data
+      })
     })
   }
 
-  buildChartData(data, year, location, startDate, endDate, type){
-
-    const colorArray = ['red', 'green', 'blue', 'yellow', 'orange', 'purple', 'aqua', 'black', 'brown', 'chartreuse', 'darkcyan', 'deeppink', 'gray']
-
-    // create an array to store chart templates in.
-    let chartDataArray = [];
-
-    //make a reference to the chart data structure
-    let chartDataTemplate = {
-      label: null, // fill this in with the alternative name
-      fill: false,
-      backgroundColor: null, // fill this in with one of the colors
-      borderColor: null, // fill this in with one of the colors
-      pointBorderColor: null, // fill this in with one of the colors
-      pointBackgroundColor: null, // fill this in with one of the colors
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: null, // fill this in with one of the colors
-      pointHoverBorderColor: null, // fill this in with one of the colors
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: null // fill this in with an array of all the data points for each day of the year.
+  getZone(name){
+    function findZone(element) {
+      return element.herd_name === name;
     }
-
-    this.state.alternatives.forEach((alt, index) => {
-      // create a copy of the chartDataTemplate
-      // we will create a new version of this for each alternative
-      // then it can be pushed onto the chartDataArray
-      let copy = ObjectUtil.copy(chartDataTemplate)
-      copy.label = alt
-      // set the copy chartData objects data key with the value of the response objects array
-      copy.data = data[alt];
-      copy.backgroundColor = colorArray[index];
-      copy.borderColor = colorArray[index];
-      copy.pointBorderColor = colorArray[index];
-      copy.pointBackgroundColor = colorArray[index];
-      copy.pointHoverBackgroundColor = colorArray[index];
-      copy.pointHoverBorderColor = colorArray[index];
-      chartDataArray.push(copy)
-    })
-
-    let dates = this.state.dates;
-    const newDateArray = dates.slice(startDate - 1, endDate)
-
-    this.setState({
-      chartData: {
-        location: location,
-        year: year,
-        alternative: this.state.alternatives,
-        labels: newDateArray,
-        data: chartDataArray
-      }
-    })
+    const zone = this.state.data.find(findZone)
+    this.setState({zone: zone})
   }
 
-
-  setParams(year, location, startDate, endDate, type){
-    Api.post('/projects', {
-      "year": year,
-      "location": location,
-      "startDate": startDate,
-      "endDate": endDate,
-      "type": type
-    }).then(response => {
-      this.buildChartData(response.data, year, location, startDate, endDate, type)
+  search(){
+    const input = findDOMNode(this.refs.input).value;
+    this.setState({
+      searchBar: input
     })
+    console.log('set new state', input)
   }
 
 
   render() {
-    if(this.state.loading){
+    const areas = this.state.data? this.state.data : null
+
+    /* arrays for population, range size data, and labels */
+    const labelArray = [];
+    const populationArray = [];
+    const rangeArray = [];
+
+    /* arrays for population and range size data */
+
+    /* map over each chuck of area data */
+    const ecozones = areas ? areas.map((area, index) => {
+      /* push data into correct array for charts */
+      labelArray.push(area.herd_name)
+      populationArray.push(area.population)
+      rangeArray.push(area.range)
+      /* return and individual area object */
       return (
-        <p>Loading...</p>
+        <area
+          key={ index }
+          shape="poly"
+          onClick={ () => { this.getZone(area.herd_name) } }
+          coords={ area.coords }
+          href="#_"
+          target="_self"
+          alt={ area.herd_name }>
+        </area>
       )
-    }
+    }) : null
+
+    const list = areas ? areas.map((area, index) => {
+    const name = area.herd_name.toUpperCase();
+    const searchParams = this.state.searchBar.toUpperCase();
+    const display = name.includes(searchParams) ? { display: '' } : { display: 'none' }
+      return (
+        <div className="list-item"
+          style={ display }
+          key={ index }
+          onClick={ () => { this.getZone(area.herd_name) } }
+          alt={ area.herd_name }>
+          { area.herd_name }
+        </div>
+      )
+    }) : (
+      <div className="list-item">No Matches Found</div>
+    )
+
+    const searchBar = (
+      <input
+        className='input'
+        type="text"
+        ref="input"
+        onChange={ this.search }
+        value={ this.state.searchBar }>
+      </input>
+    )
+
+    const data = {
+      labels: labelArray,
+      datasets: [{
+        label: 'Population of Herd',
+        type:'line',
+        data: populationArray,
+        fill: false,
+        borderColor: '#EC932F',
+        backgroundColor: '#EC932F',
+        pointBorderColor: '#EC932F',
+        pointBackgroundColor: '#EC932F',
+        pointHoverBackgroundColor: '#EC932F',
+        pointHoverBorderColor: '#EC932F',
+        yAxisID: 'y-axis-2'
+      },
+      {
+        type: 'bar',
+        label: 'Size of Region (km2)',
+        data: rangeArray,
+        fill: false,
+        backgroundColor: '#71B37C',
+        borderColor: '#71B37C',
+        hoverBackgroundColor: '#71B37C',
+        hoverBorderColor: '#71B37C',
+        yAxisID: 'y-axis-1'
+      }]
+    };
+
+    const options = {
+      responsive: true,
+      tooltips: {
+        mode: 'label'
+      },
+      elements: {
+        line: {
+          fill: false
+        }
+      },
+      scales: {
+        xAxes: [
+          {
+            display: true,
+            gridLines: {
+              display: false
+            },
+            labels: {
+              show: true
+            }
+          }
+        ],
+        yAxes: [
+          {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            id: 'y-axis-1',
+            gridLines: {
+              display: false
+            },
+            labels: {
+              show: true
+            }
+          },
+          {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            id: 'y-axis-2',
+            gridLines: {
+              display: false
+            },
+            labels: {
+              show: true
+            }
+          }
+        ]
+      }
+    };
+
+
     return (
       <Grid>
-        <Row>
-          <Chart
-            chartData={ this.state.chartData }/>
-          <Toolbox
-            setParams = { this.setParams }
-            models = { this.state.models }
-            dates={ this.state.dates }
-            years={ this.state.years }
-            locations={ this.state.locations }
-            alternatives={ this.state.alternatives }
-            dataType={ this.state.dataType }/>
+        <Row className="show-grid">
+          <Col xs={12} md={8}>
+            <Panel header='BC Caribou Data Tool' className='map'>
+              <img src="/build/images/caribou_by_ecotype_2011map_sm.jpg" alt="caribou distribution by ecotype" useMap="#caribou_ecotype_range"></img>
+              <map name="caribou_ecotype_range">
+                { ecozones }
+              </map>
+            </Panel>
+          </Col>
+          <Col xs={6} md={2}>
+            <Info
+              zone={ this.state.zone }
+            />
+          </Col>
+          <Col xs={6} md={2}>
+            <Panel header={ searchBar } className='info'>
+              <div id="herd-list">
+                { list }
+              </div>
+            </Panel>
+          </Col>
+        </Row>
+
+        <Row className="show-grid">
+          <Col xs={12} md={8}>
+            <Panel header='Population and Range Size Data' className='chart'>
+              <Bar
+                data={ data }
+                options={ options }
+              />
+            </Panel>
+          </Col>
+          <Col xs={12} md={4}>
+          </Col>
         </Row>
       </Grid>
     );

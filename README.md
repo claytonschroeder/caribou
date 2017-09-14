@@ -40,6 +40,11 @@ migrate the latest version of the database by executing:
 Then seed the database by executing:
   npm run knex seed:run
 
+### To mig ate and seed production database
+
+  NODE_ENV=production npm run knex migrate:latest
+  NODE_ENV=production npm run knex seed:run
+
 ### Linting
 
 This boilerplate project includes React ESLint configuration.
